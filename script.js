@@ -1,64 +1,51 @@
+import { loadModel } from './model.js';
+import { initCanvas, drawOnCanvas } from './canvas.js';
+import { preprocessImage, runInference, displayResult } from './utils.js';
+
 let model;
-let loading = false;
-let drawingCanvas = document.getElementById('drawingCanvas');
-let context = drawingCanvas.getContext('2d');
-let predictedDigit = document.getElementById('predictedDigit');
-let confidenceScore = document.getElementById('confidenceScore');
+let canvas;
+let ctx;
+let drawing = false;
+let lastX, lastY;
 
-context.strokeStyle = '#ffffff';
-context.lineWidth = 12;
-context.lineCap = 'round';
-context.lineJoin = 'round';
-
-let isDrawing = false;
-drawingCanvas.addEventListener('pointerdown', (e) => {
-    isDrawing = true;
-    context.beginPath();
-    context.moveTo(e.clientX - drawingCanvas.getBoundingClientRect().left, e.clientY - drawingCanvas.getBoundingClientRect().top);
-});
-drawingCanvas.addEventListener('pointermove', (e) => {
-    if (isDrawing) {
-        context.lineTo(e.clientX - drawingCanvas.getBoundingClientRect().left, e.clientY - drawingCanvas.getBoundingClientRect().top);
-        context.stroke();
-    }
-});
-drawingCanvas.addEventListener('pointerup', () => {
-    isDrawing = false;
-    recognizeDraw();
-});
-
-document.addEventListener('DOMContentLoaded', async () => {
-    model = await loadModel();
-    loading = false;
+loadModel().then((loadedModel) => {
+    model = loadedModel;
+    initCanvas();
+    canvas = document.getElementById('drawingCanvas');
+    ctx = canvas.getContext('2d');
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 12;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    canvas.addEventListener('pointerdown', (e) => {
+        drawing = true;
+        lastX = e.clientX - canvas.getBoundingClientRect().left;
+        lastY = e.clientY - canvas.getBoundingClientRect().top;
+    });
+    canvas.addEventListener('pointermove', (e) => {
+        if (drawing && e.buttons === 1) {
+            const x = e.clientX - canvas.getBoundingClientRect().left;
+            const y = e.clientY - canvas.getBoundingClientRect().top;
+            drawOnCanvas(ctx, lastX, lastY, x, y);
+            lastX = x;
+            lastY = y;
+        }
+    });
+    canvas.addEventListener('pointerup', () => {
+        drawing = false;
+        recognizeDraw();
+    });
 });
 
 function clearAll() {
-    context.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-    predictedDigit.textContent = 'Your number is N/A';
-    confidenceScore.textContent = 'Confidence score -> 0';
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    document.getElementById('predictedDigit').textContent = 'N/A';
+    document.getElementById('confidenceScore').textContent = 'Confidence score -> 0';
 }
 
 function recognizeDraw() {
-    if (loading) return;
-    const tensor = preprocessImage(drawingCanvas);
-    const prediction = runInference(tensor);
-    const digit = prediction.indexOf(Math.max(...prediction));
-    const confidence = prediction[digit] * 100;
-    predictedDigit.textContent = `Your number is ${digit}`;
-    confidenceScore.textContent = `Confidence score -> ${confidence.toFixed(1)}%`;
-}
-
-function preprocessImage(canvas) {
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = 28;
-    tempCanvas.height = 28;
-    const tempContext = tempCanvas.getContext('2d');
-    tempContext.drawImage(canvas, 0, 0, 28, 28);
-    const imageData = tempContext.getImageData(0, 0, 28, 28);
-    const grayscale = [];
-    for (let i = 0; i < imageData.data.length; i += 4) {
-        const gray = (imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2]) / 3;
-        grayscale.push(gray / 255);
-    }
-    return tf.tensor3d(grayscale, [28, 28, 1]);
+    const tensor = preprocessImage(canvas);
+    runInference(model, tensor).then((result) => {
+        displayResult(result);
+    });
 }
