@@ -28,3 +28,6 @@ export function displayResult(result) {
     document.getElementById('predictedDigit').textContent = predictedDigit.toString();
     document.getElementById('confidenceScore').textContent = `Confidence score -> ${(confidence * 100).toFixed(1)}%`;
 }
+```
+
+Note that this is not an exhaustive list of improvements, and you may need to make additional changes to suit your specific requirements.
