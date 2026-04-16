@@ -4,61 +4,61 @@ let drawingCanvas = document.getElementById('drawingCanvas');
 let context = drawingCanvas.getContext('2d');
 let predictedDigit = document.getElementById('predictedDigit');
 let confidenceScore = document.getElementById('confidenceScore');
-let clearBtn = document.getElementById('clearBtn');
-let recognizeBtn = document.getElementById('recognizeBtn');
 
-// Load TensorFlow.js model
-async function loadModel() {
-    loading = true;
-    model = await tf.loadLayersModel('/tfjs_model/model.json');
+context.strokeStyle = '#ffffff';
+context.lineWidth = 12;
+context.lineCap = 'round';
+context.lineJoin = 'round';
+
+let isDrawing = false;
+drawingCanvas.addEventListener('pointerdown', (e) => {
+    isDrawing = true;
+    context.beginPath();
+    context.moveTo(e.clientX - drawingCanvas.getBoundingClientRect().left, e.clientY - drawingCanvas.getBoundingClientRect().top);
+});
+drawingCanvas.addEventListener('pointermove', (e) => {
+    if (isDrawing) {
+        context.lineTo(e.clientX - drawingCanvas.getBoundingClientRect().left, e.clientY - drawingCanvas.getBoundingClientRect().top);
+        context.stroke();
+    }
+});
+drawingCanvas.addEventListener('pointerup', () => {
+    isDrawing = false;
+    recognizeDraw();
+});
+
+document.addEventListener('DOMContentLoaded', async () => {
+    model = await loadModel();
     loading = false;
-}
+});
 
-// Clear canvas and reset predicted digit and confidence score
 function clearAll() {
     context.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-    predictedDigit.textContent = 'N/A';
+    predictedDigit.textContent = 'Your number is N/A';
     confidenceScore.textContent = 'Confidence score -> 0';
 }
 
-// Recognize drawn digit
-async function recognizeDraw() {
+function recognizeDraw() {
     if (loading) return;
-    // Get pixel data from canvas
-    const pixels = context.getImageData(0, 0, drawingCanvas.width, drawingCanvas.height).data;
-    // Resize to 28x28 and convert to grayscale
-    const resizedPixels = tf.tidy(() => {
-        const tensor = tf.tensor3d(pixels, [drawingCanvas.height, drawingCanvas.width, 4], 'float32');
-        const resizedTensor = tf.image.resizeBilinear(tensor, [28, 28]);
-        const grayscaleTensor = tf.mean(resizedTensor, 2);
-        return grayscaleTensor;
-    });
-    // Normalize to [0,1]
-    const normalizedTensor = tf.div(resizedPixels, 255);
-    // Reshape to tensor [1,28,28,1]
-    const inputTensor = normalizedTensor.reshape([1, 28, 28, 1]);
-    // Run inference
-    const output = await model.predict(inputTensor);
-    const probabilities = await output.data();
-    const predictedDigitIndex = probabilities.indexOf(Math.max(...probabilities));
-    const confidence = Math.max(...probabilities);
-    // Update predicted digit and confidence score
-    predictedDigit.textContent = predictedDigitIndex.toString();
-    confidenceScore.textContent = `Confidence score -> ${confidence.toFixed(2) * 100}%`;
+    const tensor = preprocessImage(drawingCanvas);
+    const prediction = runInference(tensor);
+    const digit = prediction.indexOf(Math.max(...prediction));
+    const confidence = prediction[digit] * 100;
+    predictedDigit.textContent = `Your number is ${digit}`;
+    confidenceScore.textContent = `Confidence score -> ${confidence.toFixed(1)}%`;
 }
 
-// Load model on page load
-loadModel();
-
-// Handle pointer events on canvas
-drawingCanvas.addEventListener('pointerdown', (e) => {
-    context.beginPath();
-    context.moveTo(e.clientX - drawingCanvas.offsetLeft, e.clientY - drawingCanvas.offsetTop);
-});
-
-drawingCanvas.addEventListener('pointermove', (e) => {
-    context.lineTo(e.clientX - drawingCanvas.offsetLeft, e.clientY - drawingCanvas.offsetTop);
-    context.stroke();
-});
-
-drawingCanvas.addEventListener('pointerup', recognizeDraw);
+function preprocessImage(canvas) {
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = 28;
+    tempCanvas.height = 28;
+    const tempContext = tempCanvas.getContext('2d');
+    tempContext.drawImage(canvas, 0, 0, 28, 28);
+    const imageData = tempContext.getImageData(0, 0, 28, 28);
+    const grayscale = [];
+    for (let i = 0; i < imageData.data.length; i += 4) {
+        const gray = (imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2]) / 3;
+        grayscale.push(gray / 255);
+    }
+    return tf.tensor3d(grayscale, [28, 28, 1]);
+}
