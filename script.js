@@ -67,12 +67,21 @@ function recognizeDraw() {
         let gray = Math.floor((pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3);
         grayscalePixels[i / 4] = gray;
     }
-    let tensor = tf.tensor3d(grayscalePixels, [28, 28, 1], 'float32').div(255);
-    tf.tidy(() => {
-        let predictions = model.predict(tensor);
-        let confidence = predictions.dataSync()[0];
-        let digit = predictions.argMax().dataSync()[0];
-        predictedDigit.textContent = `Your number is ${digit}`;
-        confidenceScore.textContent = `Confidence score -> ${(confidence * 100).toFixed(1)}%`;
-    });
+    let tensor = tf.tensor(grayscalePixels, [28, 28, 1], 'float32').div(255);
+    let predictions = model.predict(tensor);
+    let confidence = tf.softmax(predictions).dataSync()[0];
+    let digit = predictions.argMax().dataSync()[0];
+    predictedDigit.textContent = `Your number is ${digit}`;
+    confidenceScore.textContent = `Confidence score -> ${(confidence * 100).toFixed(1)}%`;
 }
+
+// Add a debouncing mechanism to prevent excessive calls to the recognizeDraw function
+let timeoutId;
+function recognizeDrawDebounced() {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(recognizeDraw, 500);
+}
+drawingCanvas.addEventListener('pointerup', recognizeDrawDebounced);
+```
+
+Note that this is just one possible way to improve the code. There are many other ways to optimize the code, and the best approach will depend on the specific requirements of the project.
