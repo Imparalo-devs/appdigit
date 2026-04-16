@@ -2,9 +2,9 @@ export function initCanvas() {
     // No initialization needed
 }
 
-export function drawOnCanvas(ctx, lastX, lastY, x, y) {
+export function drawOnCanvas(ctx, previousX, previousY, x, y) {
     ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
+    ctx.moveTo(previousX, previousY);
     ctx.lineTo(x, y);
     ctx.stroke();
 }
