@@ -6,7 +6,7 @@ let model;
 let canvas;
 let ctx;
 let drawing = false;
-let lastX, lastY;
+let previousX, previousY;
 
 loadModel().then((loadedModel) => {
     model = loadedModel;
@@ -19,16 +19,16 @@ loadModel().then((loadedModel) => {
     ctx.lineJoin = 'round';
     canvas.addEventListener('pointerdown', (e) => {
         drawing = true;
-        lastX = e.clientX - canvas.getBoundingClientRect().left;
-        lastY = e.clientY - canvas.getBoundingClientRect().top;
+        previousX = e.clientX - canvas.getBoundingClientRect().left;
+        previousY = e.clientY - canvas.getBoundingClientRect().top;
     });
     canvas.addEventListener('pointermove', (e) => {
         if (drawing && e.buttons === 1) {
             const x = e.clientX - canvas.getBoundingClientRect().left;
             const y = e.clientY - canvas.getBoundingClientRect().top;
-            drawOnCanvas(ctx, lastX, lastY, x, y);
-            lastX = x;
-            lastY = y;
+            drawOnCanvas(ctx, previousX, previousY, x, y);
+            previousX = x;
+            previousY = y;
         }
     });
     canvas.addEventListener('pointerup', () => {
