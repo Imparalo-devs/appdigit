@@ -11,57 +11,32 @@
         }
         #drawHere {
             background-color: #000000;
-            width: 50vw;
-            height: 51.6vh;
-            position: absolute;
-            left: 2.2vw;
-            top: 18vh;
+            border-radius: 14px;
         }
         #whatIUnderstood {
             background-color: #ffffff;
-            width: 43.9vw;
-            height: 51.6vh;
-            position: absolute;
-            left: 54.4vw;
-            top: 18vh;
         }
-        #clearBtn {
+        #clearBtn, #recognizeBtn {
             background-color: #ffffff;
-            width: 17.8vw;
-            height: 7.4vh;
-            position: absolute;
-            left: 78.3vw;
-            top: 72.1vh;
-        }
-        #recognizeBtn {
-            background-color: #ffffff;
-            width: 17.8vw;
-            height: 7.4vh;
-            position: absolute;
-            left: 57.2vw;
-            top: 72.1vh;
-        }
-        #confidenceScore {
-            font-size: 28px;
-        }
-        #predictedDigit {
-            font-size: 57px;
+            border-radius: 14px;
         }
     </style>
 </head>
 <body>
-    <label style="font-size: 51px; font-family: Georgia, serif; border-radius: 14px; background-color: #ffffff; width: 96.1vw; height: 6.7vh; position: absolute; left: 2.2vw; top: 4.9vh;">Demo Digit Recognizer</label>
-    <div id="drawHere" style="background-color: #000000; width: 50vw; height: 51.6vh; position: absolute; left: 2.2vw; top: 18vh;">
-        <canvas id="drawingCanvas" width="300" height="300" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);"></canvas>
-        <label style="font-size: 52px; background-color: #ffffff; width: 43.3vw; height: 6.6vh; position: absolute; left: 5.6vw; top: 73vh;">Draw your number here</label>
+    <h1 id="demoDigitRecognizer" style="font-size: 51px; background-color: #ffffff; border-radius: 14px;">Demo Digit Recognizer</h1>
+    <div id="drawHere" style="position: absolute; left: 2.2%; top: 18.0%; width: 50.0%; height: 51.6%;">
+        <canvas id="drawingCanvas" width="300" height="300"></canvas>
     </div>
-    <div id="whatIUnderstood" style="background-color: #ffffff; width: 43.9vw; height: 51.6vh; position: absolute; left: 54.4vw; top: 18vh;">
-        <label id="whatIUnderstoodLabel" style="font-size: 28px; background-color: #ffffff; width: 18.7vw; height: 4.3vh; position: absolute; left: 66.1vw; top: 23vh;">What I understood</label>
-        <label id="predictedDigit" style="font-size: 57px; background-color: #ffffff; width: 40.6vw; height: 12vh; position: absolute; left: 56.1vw; top: 32.8vh;">Your number is N/A</label>
-        <label id="confidenceScore" style="font-size: 28px; background-color: #ffffff; width: 21.7vw; height: 4.7vh; position: absolute; left: 65vw; top: 50vh;">Confidence score -> 0</label>
+    <div id="whatIUnderstood" style="position: absolute; left: 54.4%; top: 18.0%; width: 43.9%; height: 51.6%;">
+        <p id="whatIUnderstoodLabel" style="font-size: 28px;">What I understood</p>
+        <p id="predictedDigit" style="font-size: 57px;">—</p>
+        <p id="confidenceScore" style="font-size: 28px;">Confidence score -> —</p>
     </div>
-    <button id="clearBtn" onclick="clearAll()" style="background-color: #ffffff; width: 17.8vw; height: 7.4vh; position: absolute; left: 78.3vw; top: 72.1vh;">Clear</button>
-    <button id="recognizeBtn" onclick="recognizeDraw()" style="background-color: #ffffff; width: 17.8vw; height: 7.4vh; position: absolute; left: 57.2vw; top: 72.1vh;">Recognize</button>
+    <button id="clearBtn" style="position: absolute; left: 78.3%; top: 72.1%; width: 17.8%; height: 7.4%; background-color: #ffffff; border-radius: 14px;" onclick="clearAll(event)">Clear</button>
+    <button id="recognizeBtn" style="position: absolute; left: 57.2%; top: 72.1%; width: 17.8%; height: 7.4%; background-color: #ffffff; border-radius: 14px;" onclick="recognizeDraw(event)">Recognize</button>
+    <p id="drawLabel" style="position: absolute; left: 5.6%; top: 73.0%; width: 43.3%; height: 6.6%; font-size: 52px; background-color: #ffffff;">Draw your number here</p>
     <script src="script.js"></script>
+    <script src="model.js"></script>
+    <script src="utils.js"></script>
 </body>
 </html>
