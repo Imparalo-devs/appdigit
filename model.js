@@ -1,12 +1,14 @@
+let model;
+let loading = false;
+
 async function loadModel() {
-    return tf.loadLayersModel('/tfjs_model/model.json');
+    if (loading) return;
+    loading = true;
+    model = await tf.loadLayersModel('/tfjs_model/model.json');
+    loading = false;
 }
 
-function runInference(tensor) {
-    return tf.tidy(() => {
-        const prediction = model.predict(tensor);
-        return prediction.dataSync();
-    });
+async function runInference(tensor) {
+    if (!model) await loadModel();
+    return tf.tidy(() => model.predict(tensor));
 }
-
-export { loadModel, runInference };
