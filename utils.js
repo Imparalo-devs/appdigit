@@ -1,16 +1,19 @@
 function preprocessImage(canvas) {
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = 28;
-    tempCanvas.height = 28;
-    const tempContext = tempCanvas.getContext('2d');
-    tempContext.drawImage(canvas, 0, 0, 28, 28);
-    const imageData = tempContext.getImageData(0, 0, 28, 28);
-    const grayscale = [];
-    for (let i = 0; i < imageData.data.length; i += 4) {
-        const gray = (imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2]) / 3;
-        grayscale.push(gray / 255);
+    let ctx = canvas.getContext('2d');
+    let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    let pixels = imageData.data;
+    let grayscalePixels = new Uint8Array(pixels.length / 4);
+    for (let i = 0; i < pixels.length; i += 4) {
+        let gray = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
+        grayscalePixels[i / 4] = gray;
     }
-    return tf.tensor3d(grayscale, [28, 28, 1]);
+    let tensor = tf.tensor3d(grayscalePixels, [28, 28, 1], 'uint8');
+    return tensor.toFloat().div(255);
 }
 
-export { preprocessImage };
+function displayResult(result) {
+    let predictedDigit = result.argMax(1).dataSync()[0];
+    let confidence = result.max(1).dataSync()[0];
+    document.getElementById('predictedDigit').textContent = predictedDigit.toString();
+    document.getElementById('confidenceScore').textContent = `Confidence score -> ${(confidence * 100).toFixed(1)}%`;
+}
