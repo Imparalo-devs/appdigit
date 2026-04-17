@@ -10,6 +10,7 @@ ctx.lineWidth = 12;
 ctx.lineCap = 'round';
 ctx.lineJoin = 'round';
 
+// Load model
 loadModel().then(() => {
   loading = false;
 });
