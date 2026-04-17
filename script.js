@@ -1,69 +1,60 @@
-let model;
 let loading = false;
-let drawingCanvas = document.getElementById('drawingCanvas');
-let context = drawingCanvas.getContext('2d');
-let predictedDigit = document.getElementById('predictedDigit');
-let confidenceScore = document.getElementById('confidenceScore');
+let model;
+let canvas = document.getElementById('drawingCanvas');
+let ctx = canvas.getContext('2d');
+let drawing = false;
+let lastX, lastY;
 
-context.strokeStyle = '#ffffff';
-context.lineWidth = 12;
-context.lineCap = 'round';
-context.lineJoin = 'round';
+ctx.strokeStyle = '#ffffff';
+ctx.lineWidth = 12;
+ctx.lineCap = 'round';
+ctx.lineJoin = 'round';
 
-function clearAll(event) {
-    context.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-    predictedDigit.textContent = '—';
-    confidenceScore.textContent = '—';
+// Load model
+loadModel().then(() => {
+  loading = false;
+});
+
+// Event listeners
+document.getElementById('clearBtn').addEventListener('click', clearAll);
+document.getElementById('recognizeBtn').addEventListener('click', recognizeDraw);
+
+canvas.addEventListener('pointerdown', (e) => {
+  drawing = true;
+  lastX = e.clientX - canvas.getBoundingClientRect().left;
+  lastY = e.clientY - canvas.getBoundingClientRect().top;
+});
+
+canvas.addEventListener('pointermove', (e) => {
+  if (drawing) {
+    let x = e.clientX - canvas.getBoundingClientRect().left;
+    let y = e.clientY - canvas.getBoundingClientRect().top;
+    drawOnCanvas(lastX, lastY, x, y);
+    lastX = x;
+    lastY = y;
+  }
+});
+
+canvas.addEventListener('pointerup', () => {
+  drawing = false;
+  recognizeDraw();
+});
+
+function clearAll() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  document.getElementById('predictedDigit').textContent = '—';
+  document.getElementById('confidenceScore').textContent = '—';
 }
 
-async function recognizeDraw(event) {
-    if (loading) return;
-    if (!model) {
-        console.error('Model is not loaded yet.');
-        return;
-    }
-    loading = true;
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = 28;
-    tempCanvas.height = 28;
-    const tempContext = tempCanvas.getContext('2d');
-    tempContext.drawImage(drawingCanvas, 0, 0, 28, 28);
-    const imageData = tempContext.getImageData(0, 0, 28, 28);
-    const grayscaleData = new Uint8Array(28 * 28);
-    for (let i = 0; i < imageData.data.length; i += 4) {
-        const gray = Math.floor((imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2]) / 3);
-        grayscaleData[i / 4] = gray;
-    }
-    const tensor = tf.tensor3d(grayscaleData, [28, 28, 1]).reshape([1, 28, 28, 1]).toFloat().div(255);
-    try {
-        const predictions = await model.predict(tensor);
-        const confidence = predictions.max().dataSync()[0];
-        const digit = predictions.argMax().dataSync()[0];
-        predictedDigit.textContent = digit.toString();
-        confidenceScore.textContent = `Confidence score -> ${(confidence * 100).toFixed(1)}%`;
-    } catch (error) {
-        console.error('Error in prediction:', error);
-    } finally {
-        loading = false;
-    }
+function recognizeDraw() {
+  if (loading || !model) return;
+  let tensor = preprocessImage(canvas);
+  runInference(tensor).then((result) => {
+    let predictedDigit = result.predictedDigit;
+    let confidence = result.confidence;
+    document.getElementById('predictedDigit').textContent = predictedDigit;
+    document.getElementById('confidenceScore').textContent = `Confidence score -> ${confidence.toFixed(1)}%`;
+  }).catch((error) => {
+    console.error('Error recognizing draw:', error);
+  });
 }
-
-drawingCanvas.addEventListener('pointerdown', (event) => {
-    context.beginPath();
-    context.moveTo(event.clientX - drawingCanvas.getBoundingClientRect().left, event.clientY - drawingCanvas.getBoundingClientRect().top);
-});
-
-drawingCanvas.addEventListener('pointermove', (event) => {
-    if (event.buttons === 1) {
-        context.lineTo(event.clientX - drawingCanvas.getBoundingClientRect().left, event.clientY - drawingCanvas.getBoundingClientRect().top);
-        context.stroke();
-    }
-});
-
-drawingCanvas.addEventListener('pointerup', recognizeDraw);
-
-tf.loadLayersModel('/tfjs_model/model.json').then((loadedModel) => {
-    model = loadedModel;
-}).catch((error) => {
-    console.error('Error loading model:', error);
-});

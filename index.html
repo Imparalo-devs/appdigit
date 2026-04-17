@@ -6,18 +6,20 @@
     <title>Digit Recognizer</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+    <script src="script.js" defer></script>
+    <script src="canvas.js" defer></script>
+    <script src="model.js" defer></script>
 </head>
 <body>
     <div id="drawHere" class="container"></div>
     <label id="demoDigitRecognizer" class="label">Demo Digit Recognizer</label>
     <div id="whatIUnderstood" class="container"></div>
-    <button id="clearBtn" class="button" onclick="clearAll(event)">Clear</button>
-    <button id="recognizeBtn" class="button" onclick="recognizeDraw(event)">Recognize</button>
+    <button id="clearBtn" class="button">Clear</button>
+    <button id="recognizeBtn" class="button">Recognize</button>
     <label id="confidenceScore" class="label">Confidence score -> 0</label>
     <label id="predictedDigit" class="label">Your number is N/A</label>
     <label id="drawLabel" class="label">Draw your number here</label>
     <label id="whatILabel" class="label">What I understood</label>
     <canvas id="drawingCanvas" width="300" height="300"></canvas>
-    <script src="script.js"></script>
 </body>
 </html>
