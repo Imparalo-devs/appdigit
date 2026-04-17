@@ -5,21 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digit Recognizer</title>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <script src="tfjs_loader.js" defer></script>
+    <script src="canvas_handler.js" defer></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #drawHere {
+            position: absolute;
+            left: 2.2%;
+            top: 18.0%;
+            width: 50.0%;
+            height: 51.6%;
+            background-color: #000000;
+        }
+        #whatIUnderstood {
+            position: absolute;
+            left: 54.4%;
+            top: 18.0%;
+            width: 43.9%;
+            height: 51.6%;
+            background-color: #ffffff;
+        }
+        #clearBtn {
+            position: absolute;
+            left: 78.3%;
+            top: 72.1%;
+            width: 17.8%;
+            height: 7.4%;
+            background-color: #ffffff;
+        }
+        #recognizeBtn {
+            position: absolute;
+            left: 57.2%;
+            top: 72.1%;
+            width: 17.8%;
+            height: 7.4%;
+            background-color: #ffffff;
+        }
+        #confidenceScore {
+            position: absolute;
+            left: 65.0%;
+            top: 50.0%;
+            width: 21.7%;
+            height: 4.7%;
+            background-color: #ffffff;
+            font-size: 28px;
+        }
+        #predictedDigit {
+            position: absolute;
+            left: 56.1%;
+            top: 32.8%;
+            width: 40.6%;
+            height: 12.0%;
+            background-color: #ffffff;
+            font-size: 57px;
+        }
+        #drawLabel {
+            position: absolute;
+            left: 5.6%;
+            top: 73.0%;
+            width: 43.3%;
+            height: 6.6%;
+            background-color: #ffffff;
+            font-size: 52px;
+        }
+        #whatIUnderstoodLabel {
+            position: absolute;
+            left: 66.1%;
+            top: 23.0%;
+            width: 18.7%;
+            height: 4.3%;
+            background-color: #ffffff;
+            font-size: 28px;
+        }
+        #demoLabel {
+            position: absolute;
+            left: 2.2%;
+            top: 4.9%;
+            width: 96.1%;
+            height: 6.7%;
+            background-color: #ffffff;
+            font-size: 51px;
+            font-family: Georgia, serif;
+            border-radius: 14px;
+        }
+    </style>
 </head>
 <body>
-    <div id="drawHere" style="background-color: #000000; position: absolute; left: 2.2%; top: 18.0%; width: 50.0%; height: 51.6%;">
+    <div id="demoLabel">Demo Digit Recognizer</div>
+    <div id="drawHere">
         <canvas id="drawingCanvas" width="300" height="300"></canvas>
     </div>
-    <div id="whatIUnderstood" style="background-color: #ffffff; position: absolute; left: 54.4%; top: 18.0%; width: 43.9%; height: 51.6%;">
-        <label id="predictedDigit" style="font-size: 57px;">N/A</label>
-        <label id="confidenceScore" style="font-size: 28px;">Confidence score -> 0</label>
+    <div id="whatIUnderstood">
+        <div id="whatIUnderstoodLabel">What I understood</div>
+        <div id="predictedDigit">N/A</div>
+        <div id="confidenceScore">0</div>
     </div>
-    <button id="clearBtn" onclick="clearAll(event)">Clear</button>
-    <button id="recognizeBtn" onclick="recognizeDraw(event)">Recognize</button>
-    <label id="demoLabel" style="font-size: 51px; background-color: #ffffff; position: absolute; left: 2.2%; top: 4.9%; width: 96.1%; height: 6.7%; border-radius: 14px;">Demo Digit Recognizer</label>
-    <label id="drawLabel" style="font-size: 52px; background-color: #ffffff; position: absolute; left: 5.6%; top: 73.0%; width: 43.3%; height: 6.6%;">Draw your number here</label>
-    <label id="whatILabel" style="font-size: 28px; background-color: #ffffff; position: absolute; left: 66.1%; top: 23.0%; width: 18.7%; height: 4.3%;">What I understood</label>
-    <script src="script.js"></script>
+    <button id="clearBtn" onclick="clearAll()">Clear</button>
+    <button id="recognizeBtn" onclick="recognizeDraw()">Recognize</button>
+    <div id="drawLabel">Draw your number here</div>
 </body>
 </html>
