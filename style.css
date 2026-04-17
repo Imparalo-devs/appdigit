@@ -1,87 +1,84 @@
+body {
+    font-family: Georgia, serif;
+}
+
 .container {
     background-color: #000000;
-    position: absolute;
+    padding: 20px;
 }
 
 #drawHere {
-    top: 18%;
+    width: 720px;
+    height: 504px;
+    background-color: #000000;
+    position: absolute;
     left: 2.2%;
-    width: 50%;
-    height: 51.6%;
+    top: 18.0%;
 }
 
 #whatIUnderstood {
-    top: 18%;
-    left: 54.4%;
-    width: 43.9%;
-    height: 51.6%;
+    width: 632px;
+    height: 504px;
     background-color: #ffffff;
+    position: absolute;
+    left: 54.4%;
+    top: 18.0%;
 }
 
 .label {
-    position: absolute;
+    font-size: 28px;
+    background-color: #ffffff;
 }
 
 #demoDigitRecognizer {
-    top: 4.9%;
-    left: 2.2%;
-    width: 96.1%;
-    height: 6.7%;
     font-size: 51px;
-    font-family: Georgia, serif;
     border-radius: 14px;
-    background-color: #ffffff;
-}
-
-#confidenceScore {
-    top: 50%;
-    left: 65%;
-    width: 21.7%;
-    height: 4.7%;
-    font-size: 28px;
-    background-color: #ffffff;
-}
-
-#predictedDigit {
-    top: 32.8%;
-    left: 56.1%;
-    width: 40.6%;
-    height: 12%;
-    font-size: 57px;
-    background-color: #ffffff;
-}
-
-#drawLabel {
-    top: 73%;
-    left: 5.6%;
-    width: 43.3%;
-    height: 6.6%;
-    font-size: 52px;
-    background-color: #ffffff;
-}
-
-#whatILabel {
-    top: 23%;
-    left: 66.1%;
-    width: 18.7%;
-    height: 4.3%;
-    font-size: 28px;
-    background-color: #ffffff;
+    position: absolute;
+    left: 2.2%;
+    top: 4.9%;
+    width: 96.1%;
+    height: 65px;
 }
 
 .button {
-    position: absolute;
-    width: 17.8%;
-    height: 7.4%;
+    width: 256px;
+    height: 72px;
     background-color: #ffffff;
+    position: absolute;
 }
 
 #clearBtn {
-    top: 72.1%;
     left: 78.3%;
+    top: 72.1%;
 }
 
 #recognizeBtn {
-    top: 72.1%;
     left: 57.2%;
+    top: 72.1%;
+}
+
+#confidenceScore {
+    position: absolute;
+    left: 65.0%;
+    top: 50.0%;
+}
+
+#predictedDigit {
+    position: absolute;
+    left: 56.1%;
+    top: 32.8%;
+    font-size: 57px;
+}
+
+#drawLabel {
+    position: absolute;
+    left: 5.6%;
+    top: 73.0%;
+    font-size: 52px;
+}
+
+#whatILabel {
+    position: absolute;
+    left: 66.1%;
+    top: 23.0%;
 }
