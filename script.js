@@ -7,4 +7,6 @@ async function loadModel() {
     loading = false;
 }
 
-loadModel();
+document.addEventListener('DOMContentLoaded', () => {
+    loadModel();
+});
