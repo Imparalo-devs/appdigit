@@ -13,6 +13,9 @@ ctx.lineJoin = 'round';
 // Load model
 loadModel().then(() => {
   loading = false;
+  if (!model) {
+    console.error('Model failed to load');
+  }
 });
 
 // Event listeners
@@ -47,7 +50,10 @@ function clearAll() {
 }
 
 function recognizeDraw() {
-  if (loading || !model) return;
+  if (loading || !model) {
+    console.log('Model is not loaded yet');
+    return;
+  }
   let tensor = preprocessImage(canvas);
   runInference(tensor).then((result) => {
     let predictedDigit = result.predictedDigit;
