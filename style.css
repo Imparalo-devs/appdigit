@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#drawHere {
+    position: absolute;
+    left: 2.2%;
+    top: 18.0%;
+    width: 50.0%;
+    height: 51.6%;
+    background-color: #000000;
+}
+
+#whatIUnderstood {
+    position: absolute;
+    left: 54.4%;
+    top: 18.0%;
+    width: 43.9%;
+    height: 51.6%;
+    background-color: #ffffff;
+}
+
+#clearBtn {
+    position: absolute;
+    left: 78.3%;
+    top: 72.1%;
+    width: 17.8%;
+    height: 7.4%;
+    background-color: #ffffff;
+}
+
+#recognizeBtn {
+    position: absolute;
+    left: 57.2%;
+    top: 72.1%;
+    width: 17.8%;
+    height: 7.4%;
+    background-color: #ffffff;
+}
+
+#demoLabel {
+    position: absolute;
+    left: 2.2%;
+    top: 4.9%;
+    width: 96.1%;
+    height: 6.7%;
+    background-color: #ffffff;
+    font-size: 51px;
+    border-radius: 14px;
+}
+
+#drawLabel {
+    position: absolute;
+    left: 5.6%;
+    top: 73.0%;
+    width: 43.3%;
+    height: 6.6%;
+    background-color: #ffffff;
+    font-size: 52px;
+}
+
+#whatILabel {
+    position: absolute;
+    left: 66.1%;
+    top: 23.0%;
+    width: 18.7%;
+    height: 4.3%;
+    background-color: #ffffff;
+    font-size: 28px;
+}
