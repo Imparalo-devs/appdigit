@@ -1,59 +1,59 @@
-body {
-    margin: 0;
-    padding: 0;
+.container {
+    background-color: #000000;
+    position: absolute;
 }
 
 #drawHere {
-    position: absolute;
+    top: 18%;
     left: 2.2%;
-    top: 18.0%;
-    width: 50.0%;
+    width: 50%;
     height: 51.6%;
-    background-color: #000000;
 }
 
 #whatIUnderstood {
-    position: absolute;
+    top: 18%;
     left: 54.4%;
-    top: 18.0%;
     width: 43.9%;
     height: 51.6%;
     background-color: #ffffff;
 }
 
-#clearBtn {
+.label {
     position: absolute;
-    left: 78.3%;
-    top: 72.1%;
-    width: 17.8%;
-    height: 7.4%;
-    background-color: #ffffff;
 }
 
-#recognizeBtn {
-    position: absolute;
-    left: 57.2%;
-    top: 72.1%;
-    width: 17.8%;
-    height: 7.4%;
-    background-color: #ffffff;
-}
-
-#demoLabel {
-    position: absolute;
-    left: 2.2%;
+#demoDigitRecognizer {
     top: 4.9%;
+    left: 2.2%;
     width: 96.1%;
     height: 6.7%;
     background-color: #ffffff;
     font-size: 51px;
+    font-family: Georgia, serif;
     border-radius: 14px;
 }
 
+#confidenceScore {
+    top: 50%;
+    left: 65%;
+    width: 21.7%;
+    height: 4.7%;
+    background-color: #ffffff;
+    font-size: 28px;
+}
+
+#predictedDigit {
+    top: 32.8%;
+    left: 56.1%;
+    width: 40.6%;
+    height: 12%;
+    background-color: #ffffff;
+    font-size: 57px;
+}
+
 #drawLabel {
-    position: absolute;
+    top: 73%;
     left: 5.6%;
-    top: 73.0%;
     width: 43.3%;
     height: 6.6%;
     background-color: #ffffff;
@@ -61,11 +61,29 @@ body {
 }
 
 #whatILabel {
-    position: absolute;
+    top: 23%;
     left: 66.1%;
-    top: 23.0%;
     width: 18.7%;
     height: 4.3%;
     background-color: #ffffff;
     font-size: 28px;
+}
+
+.button {
+    position: absolute;
+    background-color: #ffffff;
+}
+
+#clearBtn {
+    top: 72.1%;
+    left: 78.3%;
+    width: 17.8%;
+    height: 7.4%;
+}
+
+#recognizeBtn {
+    top: 72.1%;
+    left: 57.2%;
+    width: 17.8%;
+    height: 7.4%;
 }
