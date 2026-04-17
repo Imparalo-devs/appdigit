@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digit Recognizer</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+    <script src="script.js"></script>
+    <script src="model.js"></script>
+    <script src="canvas.js"></script>
+    <script src="utils.js"></script>
+    <style>
+        body {
+            font-family: Georgia, serif;
+        }
+        #drawHere {
+            background-color: #000000;
+            width: 50%;
+            height: 51.6%;
+            position: absolute;
+            left: 2.2%;
+            top: 18.0%;
+        }
+        #whatIUnderstood {
+            background-color: #ffffff;
+            width: 43.9%;
+            height: 51.6%;
+            position: absolute;
+            left: 54.4%;
+            top: 18.0%;
+        }
+        #clearBtn {
+            background-color: #ffffff;
+            width: 17.8%;
+            height: 7.4%;
+            position: absolute;
+            left: 78.3%;
+            top: 72.1%;
+        }
+        #recognizeBtn {
+            background-color: #ffffff;
+            width: 17.8%;
+            height: 7.4%;
+            position: absolute;
+            left: 57.2%;
+            top: 72.1%;
+        }
+        #confidenceScore {
+            font-size: 28px;
+        }
+        #predictedDigit {
+            font-size: 57px;
+        }
+    </style>
+</head>
+<body>
+    <div id="drawHere">
+        <canvas id="drawingCanvas" width="300" height="300"></canvas>
+        <label id="drawLabel" style="font-size: 52px;">Draw your number here</label>
+    </div>
+    <div id="whatIUnderstood">
+        <label id="whatILabel" style="font-size: 28px;">What I understood</label>
+        <label id="predictedDigit" style="font-size: 57px;">N/A</label>
+        <label id="confidenceScore" style="font-size: 28px;">Confidence score -> 0</label>
+    </div>
+    <button id="clearBtn" onclick="clearAll()">Clear</button>
+    <button id="recognizeBtn" onclick="recognizeDraw()">Recognize</button>
+    <label id="demoLabel" style="font-size: 51px; background-color: #ffffff; border-radius: 14px;">Demo Digit Recognizer</label>
+</body>
+</html>
