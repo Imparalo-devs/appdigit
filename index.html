@@ -4,22 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digit Recognizer</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
 </head>
 <body>
-    <div id="drawHere" style="background-color: #000000; position: absolute; left: 2.2%; top: 18.0%; width: 50.0%; height: 51.6%;">
-        <canvas id="drawingCanvas" width="300" height="300"></canvas>
-    </div>
-    <div id="whatIUnderstood" style="background-color: #ffffff; position: absolute; left: 54.4%; top: 18.0%; width: 43.9%; height: 51.6%;">
-        <label id="predictedDigit" style="font-size: 57px;">N/A</label>
-        <label id="confidenceScore" style="font-size: 28px;">Confidence score -> 0</label>
-    </div>
-    <button id="clearBtn" onclick="clearAll(event)">Clear</button>
-    <button id="recognizeBtn" onclick="recognizeDraw(event)">Recognize</button>
-    <label id="demoLabel" style="font-size: 51px; background-color: #ffffff; position: absolute; left: 2.2%; top: 4.9%; width: 96.1%; height: 6.7%; border-radius: 14px;">Demo Digit Recognizer</label>
-    <label id="drawLabel" style="font-size: 52px; background-color: #ffffff; position: absolute; left: 5.6%; top: 73.0%; width: 43.3%; height: 6.6%;">Draw your number here</label>
-    <label id="whatILabel" style="font-size: 28px; background-color: #ffffff; position: absolute; left: 66.1%; top: 23.0%; width: 18.7%; height: 4.3%;">What I understood</label>
+    <div id="drawHere" class="container"></div>
+    <label id="demoDigitRecognizer" class="label">Demo Digit Recognizer</label>
+    <div id="whatIUnderstood" class="container"></div>
+    <button id="clearBtn" class="button" onclick="clearAll(event)">Clear</button>
+    <button id="recognizeBtn" class="button" onclick="recognizeDraw(event)">Recognize</button>
+    <label id="confidenceScore" class="label">Confidence score -> 0</label>
+    <label id="predictedDigit" class="label">Your number is N/A</label>
+    <label id="drawLabel" class="label">Draw your number here</label>
+    <label id="whatILabel" class="label">What I understood</label>
+    <canvas id="drawingCanvas" width="300" height="300"></canvas>
     <script src="script.js"></script>
 </body>
 </html>
