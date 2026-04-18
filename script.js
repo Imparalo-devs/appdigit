@@ -2,10 +2,10 @@ let model;
 let loading = false;
 let drawingCanvas = document.getElementById('drawingCanvas');
 let context = drawingCanvas.getContext('2d');
-let predictedDigit = document.getElementById('predictedDigit');
-let confidenceScore = document.getElementById('confidenceScore');
 let clearBtn = document.getElementById('clearBtn');
 let recognizeBtn = document.getElementById('recognizeBtn');
+let predictedDigit = document.getElementById('predictedDigit');
+let confidenceScore = document.getElementById('confidenceScore');
 
 context.strokeStyle = '#ffffff';
 context.lineWidth = 12;
@@ -22,50 +22,52 @@ async function loadModel() {
 // Clear canvas
 function clearAll() {
     context.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-    predictedDigit.textContent = '—';
-    confidenceScore.textContent = '—';
+    predictedDigit.textContent = 'N/A';
+    confidenceScore.textContent = 'Confidence score -> 0';
 }
 
-// Recognize drawn digit
+// Recognize digit
 async function recognizeDraw() {
     if (loading) return;
-    const canvas = document.createElement('canvas');
-    canvas.width = 28;
-    canvas.height = 28;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(drawingCanvas, 0, 0, 28, 28);
-    const imageData = ctx.getImageData(0, 0, 28, 28);
-    const pixels = imageData.data;
-    const grayscale = [];
-    for (let i = 0; i < pixels.length; i += 4) {
-        const gray = pixels[i] * 0.2126 + pixels[i + 1] * 0.7152 + pixels[i + 2] * 0.0722;
-        grayscale.push(gray / 255);
-    }
-    const tensor = tf.tensor2d(grayscale, [28, 28], 'float32');
+    const tensor = preprocessImage(drawingCanvas);
     const prediction = await model.predict(tensor);
-    const probabilities = prediction.dataSync();
-    const maxIndex = probabilities.indexOf(Math.max(...probabilities));
-    const confidence = probabilities[maxIndex];
-    predictedDigit.textContent = maxIndex.toString();
-    confidenceScore.textContent = (confidence * 100).toFixed(1) + '%';
+    const confidence = prediction.dataSync()[0];
+    const digit = prediction.argMax().dataSync()[0];
+    predictedDigit.textContent = digit;
+    confidenceScore.textContent = `Confidence score -> ${(confidence * 100).toFixed(1)}%`;
 }
 
-// Handle pointer events
+// Preprocess image
+function preprocessImage(canvas) {
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = 28;
+    tempCanvas.height = 28;
+    const tempContext = tempCanvas.getContext('2d');
+    tempContext.drawImage(canvas, 0, 0, 28, 28);
+    const imageData = tempContext.getImageData(0, 0, 28, 28);
+    const pixels = imageData.data;
+    const grayscalePixels = new Uint8Array(28 * 28);
+    for (let i = 0; i < pixels.length; i += 4) {
+        const grayscale = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
+        grayscalePixels[i / 4] = grayscale;
+    }
+    const tensor = tf.tensor3d(grayscalePixels, [28, 28, 1]).toFloat().div(255);
+    return tensor.reshape([1, 28, 28, 1]);
+}
+
+// Handle drawing on canvas
 drawingCanvas.addEventListener('pointerdown', (e) => {
     context.beginPath();
     context.moveTo(e.clientX - drawingCanvas.getBoundingClientRect().left, e.clientY - drawingCanvas.getBoundingClientRect().top);
 });
+
 drawingCanvas.addEventListener('pointermove', (e) => {
     if (e.buttons === 1) {
         context.lineTo(e.clientX - drawingCanvas.getBoundingClientRect().left, e.clientY - drawingCanvas.getBoundingClientRect().top);
         context.stroke();
-        context.closePath();
     }
 });
 
-drawingCanvas.addEventListener('pointerup', () => {
-    // Do nothing on pointerup event
-});
+drawingCanvas.addEventListener('pointerup', recognizeDraw);
 
-// Load model on page load
 loadModel();
