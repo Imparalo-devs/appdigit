@@ -8,18 +8,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="drawHere" style="background-color: #000000; position: absolute; left: 2.2%; top: 18.0%; width: 50.0%; height: 51.6%;">
-        <canvas id="drawingCanvas" width="300" height="300"></canvas>
-    </div>
-    <div id="whatIUnderstood" style="background-color: #ffffff; position: absolute; left: 54.4%; top: 18.0%; width: 43.9%; height: 51.6%;">
-        <label id="predictedDigit" style="font-size: 57px;">—</label>
-        <label id="confidenceScore" style="font-size: 28px;">—</label>
-    </div>
-    <button id="clearBtn" onclick="clearAll()" style="background-color: #ffffff; position: absolute; left: 78.3%; top: 72.1%; width: 17.8%; height: 7.4%;">Clear</button>
-    <button id="recognizeBtn" onclick="recognizeDraw()" style="background-color: #ffffff; position: absolute; left: 57.2%; top: 72.1%; width: 17.8%; height: 7.4%;">Recognize</button>
-    <label id="demoLabel" style="font-size: 51px; font-family: Georgia, serif; border-radius: 14px; background-color: #ffffff; position: absolute; left: 2.2%; top: 4.9%; width: 96.1%; height: 6.7%;">Demo Digit Recognizer</label>
-    <label id="drawLabel" style="font-size: 52px; background-color: #ffffff; position: absolute; left: 5.6%; top: 73.0%; width: 43.3%; height: 6.6%;">Draw your number here</label>
-    <label id="whatILabel" style="font-size: 28px; background-color: #ffffff; position: absolute; left: 66.1%; top: 23.0%; width: 18.7%; height: 4.3%;">What I understood</label>
+    <div id="drawHere" style="position: absolute; left: 2.2%; top: 18.0%; width: 50.0%; height: 51.6%; background-color: #000000;"></div>
+    <canvas id="drawingCanvas" width="300" height="300" style="position: absolute; left: 2.2%; top: 18.0%; width: 20.8%; height: 30.7%; background-color: #ffffff;"></canvas>
+    <label id="demoDigitRecognizer" style="position: absolute; left: 2.2%; top: 4.9%; width: 96.1%; height: 6.7%; background-color: #ffffff; font-size: 51px; font-family: Georgia, serif; border-radius: 14px;">Demo Digit Recognizer</label>
+    <div id="whatIUnderstood" style="position: absolute; left: 54.4%; top: 18.0%; width: 43.9%; height: 51.6%; background-color: #ffffff;"></div>
+    <button id="clearBtn" onclick="clearAll(event)" style="position: absolute; left: 78.3%; top: 72.1%; width: 17.8%; height: 7.4%; background-color: #ffffff;">Clear</button>
+    <button id="recognizeBtn" onclick="recognizeDraw(event)" style="position: absolute; left: 57.2%; top: 72.1%; width: 17.8%; height: 7.4%; background-color: #ffffff;">Recognize</button>
+    <label id="confidenceScore" style="position: absolute; left: 65.0%; top: 50.0%; width: 21.7%; height: 4.7%; background-color: #ffffff; font-size: 28px;">Confidence score -> 0</label>
+    <label id="predictedDigit" style="position: absolute; left: 56.1%; top: 32.8%; width: 40.6%; height: 12.0%; background-color: #ffffff; font-size: 57px;">Your number is N/A</label>
+    <label id="drawYourNumberHere" style="position: absolute; left: 5.6%; top: 73.0%; width: 43.3%; height: 6.6%; background-color: #ffffff; font-size: 52px;">Draw your number here</label>
+    <label id="whatIUnderstoodLabel" style="position: absolute; left: 66.1%; top: 23.0%; width: 18.7%; height: 4.3%; background-color: #ffffff; font-size: 28px;">What I understood</label>
     <script src="script.js"></script>
 </body>
 </html>
