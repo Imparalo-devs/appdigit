@@ -3,68 +3,10 @@ body {
     padding: 0;
 }
 
-#drawHere {
+div {
     position: absolute;
-    left: 2.2%;
-    top: 18.0%;
-    width: 50.0%;n    height: 51.6%;
-    background-color: #000000;
 }
 
-#whatIUnderstood {
-    position: absolute;
-    left: 54.4%;
-    top: 18.0%;
-    width: 43.9%;n    height: 51.6%;
-    background-color: #ffffff;
-}
-
-#clearBtn {
-    position: absolute;
-    left: 78.3%;
-    top: 72.1%;
-    width: 17.8%;
-    height: 7.4%;
-    background-color: #ffffff;
-}
-
-#recognizeBtn {
-    position: absolute;
-    left: 57.2%;
-    top: 72.1%;
-    width: 17.8%;
-    height: 7.4%;
-    background-color: #ffffff;
-}
-
-#demoLabel {
-    position: absolute;
-    left: 2.2%;
-    top: 4.9%;
-    width: 96.1%;
-    height: 6.7%;
-    font-size: 51px;
+label {
     font-family: Georgia, serif;
-    border-radius: 14px;
-    background-color: #ffffff;
-}
-
-#drawLabel {
-    position: absolute;
-    left: 5.6%;
-    top: 73.0%;
-    width: 43.3%;
-    height: 6.6%;
-    font-size: 52px;
-    background-color: #ffffff;
-}
-
-#whatILabel {
-    position: absolute;
-    left: 66.1%;
-    top: 23.0%;
-    width: 18.7%;
-    height: 4.3%;
-    font-size: 28px;
-    background-color: #ffffff;
 }
