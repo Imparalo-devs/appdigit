@@ -1,73 +1,86 @@
-.container {
-    background-color: #000000;
+#drawHere {
     position: absolute;
+    left: 2.2%;
+    top: 18.0%;
+    width: 50.0%;
+    height: 51.6%;
+    background-color: #000000;
 }
 
-#drawHere {
-    top: 18%;
+#demoDigitRecognizer {
+    position: absolute;
     left: 2.2%;
-    width: 50%;
-    height: 51.6%;
+    top: 4.9%;
+    width: 96.1%;
+    height: 6.7%;
+    background-color: #ffffff;
+    font-size: 51px;
+    font-family: Georgia, serif;
+    border-radius: 14px;
 }
 
 #whatIUnderstood {
-    top: 18%;
+    position: absolute;
     left: 54.4%;
+    top: 18.0%;
     width: 43.9%;
     height: 51.6%;
     background-color: #ffffff;
 }
 
-.label {
-    position: absolute;
-}
-
-#demoDigitRecognizer {
-    top: 4.9%;
-    left: 2.2%;
-    width: 96.1%;
-    height: 6.7%;
-    font-size: 51px;
-    font-family: Georgia, serif;
-    border-radius: 14px;
-    background-color: #ffffff;
-}
-
-#confidenceScore {
-    top: 50%;
-    left: 65%;
-    font-size: 28px;
-}
-
-#predictedDigit {
-    top: 32.8%;
-    left: 56.1%;
-    font-size: 57px;
-}
-
-#drawHereLabel {
-    top: 73%;
-    left: 5.6%;
-    font-size: 52px;
-}
-
-#whatIUnderstoodLabel {
-    top: 23%;
-    left: 66.1%;
-    font-size: 28px;
-}
-
 .button {
     position: absolute;
+    width: 17.8%;
+    height: 7.4%;
     background-color: #ffffff;
 }
 
 #clearBtn {
-    top: 72.1%;
     left: 78.3%;
+    top: 72.1%;
 }
 
 #recognizeBtn {
-    top: 72.1%;
     left: 57.2%;
+    top: 72.1%;
+}
+
+#confidenceScore {
+    position: absolute;
+    left: 65.0%;
+    top: 50.0%;
+    width: 21.7%;
+    height: 4.7%;
+    background-color: #ffffff;
+    font-size: 28px;
+}
+
+#predictedDigit {
+    position: absolute;
+    left: 56.1%;
+    top: 32.8%;
+    width: 40.6%;
+    height: 12.0%;
+    background-color: #ffffff;
+    font-size: 57px;
+}
+
+#drawHereLabel {
+    position: absolute;
+    left: 5.6%;
+    top: 73.0%;
+    width: 43.3%;
+    height: 6.6%;
+    background-color: #ffffff;
+    font-size: 52px;
+}
+
+#whatIUnderstoodLabel {
+    position: absolute;
+    left: 66.1%;
+    top: 23.0%;
+    width: 18.7%;
+    height: 4.3%;
+    background-color: #ffffff;
+    font-size: 28px;
 }
