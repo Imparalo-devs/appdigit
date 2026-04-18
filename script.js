@@ -2,26 +2,15 @@ let model;
 let loading = false;
 let drawingCanvas = document.getElementById('drawingCanvas');
 let context = drawingCanvas.getContext('2d');
-let predictedDigit = document.getElementById('predictedDigit');
+let clearBtn = document.getElementById('clearBtn');
+let recognizeBtn = document.getElementById('recognizeBtn');
 let confidenceScore = document.getElementById('confidenceScore');
+let predictedDigit = document.getElementById('predictedDigit');
 
 context.strokeStyle = '#ffffff';
 context.lineWidth = 12;
 context.lineCap = 'round';
 context.lineJoin = 'round';
-
-// Load model
-async function loadModel() {
-    try {
-        loading = true;
-        model = await tf.loadLayersModel('./tfjs_model/model.json');
-        loading = false;
-    } catch (error) {
-        console.error('Error loading model:', error);
-    }
-}
-
-loadModel();
 
 drawingCanvas.addEventListener('pointerdown', (e) => {
     context.beginPath();
@@ -35,38 +24,56 @@ drawingCanvas.addEventListener('pointermove', (e) => {
     }
 });
 
-drawingCanvas.addEventListener('pointerup', (e) => recognizeDraw(e));
+drawingCanvas.addEventListener('pointerup', recognizeDraw);
 
-function clearAll(event) {
+clearBtn.addEventListener('click', clearAll);
+
+recognizeBtn.addEventListener('click', recognizeDraw);
+
+async function loadModel() {
+    try {
+        loading = true;
+        model = await tf.loadLayersModel('/tfjs_model/model.json');
+        loading = false;
+    } catch (error) {
+        console.error('Error loading model:', error);
+        loading = false;
+    }
+}
+
+loadModel();
+
+function clearAll() {
     context.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
     predictedDigit.textContent = '—';
     confidenceScore.textContent = '—';
 }
 
-function recognizeDraw(event) {
+function recognizeDraw() {
     if (loading) return;
-    if (!model) {
-        console.error('Model not loaded');
-        return;
-    }
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = 28;
-    tempCanvas.height = 28;
-    const tempContext = tempCanvas.getContext('2d');
-    tempContext.drawImage(drawingCanvas, 0, 0, 28, 28);
-    const imageData = tempContext.getImageData(0, 0, 28, 28);
-    const pixels = imageData.data;
-    const grayscalePixels = new Uint8Array(28 * 28);
-    for (let i = 0; i < pixels.length; i += 4) {
-        const gray = Math.floor((pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3);
-        grayscalePixels[i / 4] = gray;
-    }
-    const tensor = tf.tensor4d(grayscalePixels, [1, 28, 28, 1]).toFloat().div(255);
-    tf.tidy(() => {
-        const predictions = model.predict(tensor);
-        const confidence = predictions.dataSync()[0];
-        const digit = predictions.argMax().dataSync()[0];
-        predictedDigit.textContent = digit.toString();
-        confidenceScore.textContent = (confidence * 100).toFixed(1) + '%';
+    const tensor = tf.tidy(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 28;
+        canvas.height = 28;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(drawingCanvas, 0, 0, 28, 28);
+        const imageData = ctx.getImageData(0, 0, 28, 28);
+        const data = new Uint8Array(28 * 28);
+        for (let i = 0; i < 28 * 28; i++) {
+            data[i] = imageData.data[i * 4];
+        }
+        return tf.tensor4d(data, [1, 28, 28, 1]).toFloat().div(255);
+    });
+    model.predict(tensor).then((predictions) => {
+        try {
+            const confidence = predictions.dataSync()[0];
+            const digit = predictions.argMax().dataSync()[0];
+            predictedDigit.textContent = digit.toString();
+            confidenceScore.textContent = `Confidence score -> ${(confidence * 100).toFixed(1)}%`;
+        } catch (error) {
+            console.error('Error processing predictions:', error);
+        }
+    }).catch((error) => {
+        console.error('Error making prediction:', error);
     });
 }
