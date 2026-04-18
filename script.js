@@ -14,7 +14,7 @@ context.lineJoin = 'round';
 async function loadModel() {
     try {
         loading = true;
-        model = await tf.loadLayersModel('/tfjs_model/model.json');
+        model = await tf.loadLayersModel('./tfjs_model/model.json');
         loading = false;
     } catch (error) {
         console.error('Error loading model:', error);
