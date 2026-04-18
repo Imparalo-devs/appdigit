@@ -1,3 +1,7 @@
+body {
+    font-family: Georgia, serif;
+}
+
 .container {
     background-color: #000000;
     position: absolute;
@@ -28,9 +32,8 @@
     width: 96.1%;
     height: 6.7%;
     font-size: 51px;
-    font-family: Georgia, serif;
-    border-radius: 14px;
     background-color: #ffffff;
+    border-radius: 14px;
 }
 
 #confidenceScore {
@@ -67,6 +70,7 @@
 
 .button {
     position: absolute;
+    background-color: #ffffff;
 }
 
 #clearBtn {
@@ -74,7 +78,6 @@
     top: 72.1%;
     width: 17.8%;
     height: 7.4%;
-    background-color: #ffffff;
 }
 
 #recognizeBtn {
@@ -82,5 +85,4 @@
     top: 72.1%;
     width: 17.8%;
     height: 7.4%;
-    background-color: #ffffff;
 }
