@@ -4,68 +4,76 @@ let canvas = document.getElementById('drawingCanvas');
 let ctx = canvas.getContext('2d');
 let predictedDigitLabel = document.getElementById('predictedDigit');
 let confidenceScoreLabel = document.getElementById('confidenceScore');
-let clearBtn = document.getElementById('clearBtn');
-let recognizeBtn = document.getElementById('recognizeBtn');
 
 ctx.strokeStyle = '#ffffff';
 ctx.lineWidth = 12;
 ctx.lineCap = 'round';
 ctx.lineJoin = 'round';
 
-// Load model
-async function loadModel() {
-    loading = true;
-    model = await tf.loadLayersModel('./tfjs_model/model.json');
-    loading = false;
-}
+let drawing = false;
+let lastX, lastY;
 
-loadModel();
-
-// Clear canvas
 function clearAll(event) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     predictedDigitLabel.textContent = 'Your number is N/A';
     confidenceScoreLabel.textContent = 'Confidence score -> 0';
 }
 
-// Recognize digit
-function recognizeDraw(event) {
+async function recognizeDraw(event) {
     if (loading) return;
-    const tensor = preprocessCanvasImage(canvas);
-    const prediction = await model.predict(tensor);
-    const probabilities = await prediction.data();
-    const predictedDigit = probabilities.indexOf(Math.max(...probabilities));
-    const confidence = Math.max(...probabilities);
-    predictedDigitLabel.textContent = `Your number is ${predictedDigit}`;
-    confidenceScoreLabel.textContent = `Confidence score -> ${(confidence * 100).toFixed(1)}%`;
+    loading = true;
+    const tensor = preprocessImage(canvas);
+    model.predict(tensor).then(predictions => { try {
+        const predictedDigit = predictions.argMax(-1);
+        const confidence = predictions.max(-1);
+        predictedDigitLabel.textContent = `Your number is ${predictedDigit.dataSync()[0]}`;
+        confidenceScoreLabel.textContent = `Confidence score -> ${(confidence.dataSync()[0] * 100).toFixed(1)}%`;
+        loading = false;
+    });
 }
 
-// Preprocess canvas image
-function preprocessCanvasImage(canvas) {
+canvas.addEventListener('pointerdown', (e) => {
+    drawing = true;
+    lastX = e.clientX - canvas.getBoundingClientRect().left;
+    lastY = e.clientY - canvas.getBoundingClientRect().top;
+});
+
+canvas.addEventListener('pointermove', (e) => {
+    if (!drawing) return;
+    const x = e.clientX - canvas.getBoundingClientRect().left;
+    const y = e.clientY - canvas.getBoundingClientRect().top;
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    lastX = x;
+    lastY = y;
+});
+
+canvas.addEventListener('pointerup', () => {
+    drawing = false;
+    recognizeDraw().catch(error => console.error('Error recognizing draw:', error));
+});
+
+async function loadModel() {
+    model = await tf.loadLayersModel('./tfjs_model/model.json');
+}
+
+loadModel().catch(error => console.error('Error loading model:', error));
+
+function preprocessImage(canvas) {
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = 28;
     tempCanvas.height = 28;
     const tempCtx = tempCanvas.getContext('2d');
     tempCtx.drawImage(canvas, 0, 0, 28, 28);
     const imageData = tempCtx.getImageData(0, 0, 28, 28);
-    const grayscaleData = new Uint8ClampedArray(28 * 28);
-    for (let i = 0; i < imageData.data.length; i += 4) {
-        const gray = (imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2]) / 3;
-        grayscaleData[i / 4] = gray;
+    const pixels = imageData.data;
+    const grayscalePixels = new Uint8Array(28 * 28);
+    for (let i = 0; i < pixels.length; i += 4) {
+        const gray = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
+        grayscalePixels[i / 4] = gray;
     }
-    const tensor = tf.tensor3d(grayscaleData, [28, 28, 1]);
-    return tensor.div(255);
+    const tensor = tf.tensor3d(grayscalePixels, [28, 28, 1]).toFloat().div(255);
+    return tensor.reshape([1, 28, 28, 1]);
 }
-
-// Handle pointer events
-canvas.addEventListener('pointerdown', (e) => {
-    ctx.beginPath();
-    ctx.moveTo(e.clientX - canvas.getBoundingClientRect().left, e.clientY - canvas.getBoundingClientRect().top);
-});
-
-canvas.addEventListener('pointermove', (e) => {
-    if (e.buttons === 1) {
-        ctx.lineTo(e.clientX - canvas.getBoundingClientRect().left, e.clientY - canvas.getBoundingClientRect().top);
-        ctx.stroke();
-    }
-});
