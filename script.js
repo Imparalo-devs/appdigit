@@ -2,60 +2,77 @@ let model;
 let loading = false;
 let drawingCanvas = document.getElementById('drawingCanvas');
 let context = drawingCanvas.getContext('2d');
+let predictedDigit = document.getElementById('predictedDigit');
+let confidenceScore = document.getElementById('confidenceScore');
+let clearBtn = document.getElementById('clearBtn');
+let recognizeBtn = document.getElementById('recognizeBtn');
+
 context.strokeStyle = '#ffffff';
 context.lineWidth = 12;
 context.lineCap = 'round';
 context.lineJoin = 'round';
-let isDrawing = false;
-drawingCanvas.addEventListener('pointerdown', (e) => {
-    isDrawing = true;
+
+function clearAll(event) {
+    context.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+    predictedDigit.textContent = '—';
+    confidenceScore.textContent = '—';
+}
+
+function recognizeDraw(event) {
+    if (loading) return;
+    loading = true;
+    const tensor = preprocessImage(drawingCanvas);
+    model.predict(tensor).then((predictions) => {
+        try {
+          const predicted = predictions.argMax(1);
+          const confidence = predictions.max(1);
+          predictedDigit.textContent = predicted.toString();
+          confidenceScore.textContent = (confidence * 100).toFixed(1) + '%';
+          loading = false;
+        } catch (error) {
+          console.error(error);
+        }
+      });
+        try {
+        const predicted = predictions.argMax(1);
+        const confidence = predictions.max(1);
+        predictedDigit.textContent = predicted.toString();
+        confidenceScore.textContent = (confidence * 100).toFixed(1) + '%';
+        loading = false;
+    });
+}
+
+drawingCanvas.addEventListener('pointerdown', (event) => {
     context.beginPath();
-    context.moveTo(e.clientX - drawingCanvas.getBoundingClientRect().left, e.clientY - drawingCanvas.getBoundingClientRect().top);
+    context.moveTo(event.clientX - drawingCanvas.getBoundingClientRect().left, event.clientY - drawingCanvas.getBoundingClientRect().top);
 });
-drawingCanvas.addEventListener('pointermove', (e) => {
-    if (isDrawing) {
-        context.lineTo(e.clientX - drawingCanvas.getBoundingClientRect().left, e.clientY - drawingCanvas.getBoundingClientRect().top);
+
+drawingCanvas.addEventListener('pointermove', (event) => {
+    if (event.buttons === 1) {
+        context.lineTo(event.clientX - drawingCanvas.getBoundingClientRect().left, event.clientY - drawingCanvas.getBoundingClientRect().top);
         context.stroke();
     }
 });
-drawingCanvas.addEventListener('pointerup', () => {
-    isDrawing = false;
-    recognizeDraw();
+
+drawingCanvas.addEventListener('pointerup', () => recognizeDraw(event));
+
+loadModelKeras3('./tfjs_model/model.json').then((loadedModel) => {
+    model = loadedModel;
 });
-async function loadModel() {
-    loading = true;
-    model = await loadModelKeras3('./tfjs_model/model.json');
-    loading = false;
-}
-loadModel();
-function clearAll() {
-    context.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-    document.getElementById('predictedDigit').textContent = '—';
-    document.getElementById('confidenceScore').textContent = '—';
-}
-function recognizeDraw() {
-    if (loading) return;
-    const tensor = tf.tidy(() => {
-        const canvas = document.createElement('canvas');
-        canvas.width = 28;
-        canvas.height = 28;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(drawingCanvas, 0, 0, 28, 28);
-        const imageData = ctx.getImageData(0, 0, 28, 28);
-        const data = new Uint8Array(28 * 28);
-        for (let i = 0; i < 28 * 28; i++) {
-            data[i] = imageData.data[i * 4];
-        }
-        return tf.tensor4d(data, [1, 28, 28, 1]).toFloat().div(255);
-    });
-    model.predict(tensor).then((predictions) => {
-        try {
-        const confidence = predictions.dataSync()[0];
-        const digit = predictions.argMax().dataSync()[0];
-        document.getElementById('predictedDigit').textContent = digit.toString();
-        document.getElementById('confidenceScore').textContent = `Confidence score -> ${(confidence * 100).toFixed(1)}%`;
-        } catch (error) {
-          console.error('Error in recognizeDraw:', error);
-        }
-    });
+
+function preprocessImage(canvas) {
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = 28;
+    tempCanvas.height = 28;
+    const tempContext = tempCanvas.getContext('2d');
+    tempContext.drawImage(canvas, 0, 0, 28, 28);
+    const imageData = tempContext.getImageData(0, 0, 28, 28);
+    const pixels = imageData.data;
+    const grayscale = new Uint8Array(28 * 28);
+    for (let i = 0; i < pixels.length; i += 4) {
+        const gray = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
+        grayscale[i / 4] = gray;
+    }
+    const tensor = tf.tensor3d(grayscale, [28, 28, 1]);
+    return tensor.toFloat().div(255);
 }
