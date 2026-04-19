@@ -62,17 +62,18 @@
 }
 .button {
     position: absolute;
-    background-color: #ffffff;
 }
 #clearBtn {
     left: 78.3%;
     top: 72.1%;
     width: 17.8%;
     height: 7.4%;
+    background-color: #ffffff;
 }
 #recognizeBtn {
     left: 57.2%;
     top: 72.1%;
     width: 17.8%;
     height: 7.4%;
+    background-color: #ffffff;
 }
