@@ -4,9 +4,81 @@ body {
 }
 
 .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+#drawHere {
+    background-color: #000000;
+    width: 50vw;
+    height: 51.6vh;
+    left: 2.2vw;
+    top: 18vh;
     position: absolute;
 }
 
 #drawingCanvas {
-    border: 1px solid #000000;
+    border: 1px solid #ffffff;
+}
+
+#drawLabel {
+    font-size: 52px;
+    font-family: Georgia, serif;
+    color: #ffffff;
+}
+
+#whatIUnderstood {
+    background-color: #ffffff;
+    width: 43.9vw;
+    height: 51.6vh;
+    left: 54.4vw;
+    top: 18vh;
+    position: absolute;
+}
+
+#demoLabel {
+    font-size: 51px;
+    font-family: Georgia, serif;
+    border-radius: 14px;
+    background-color: #ffffff;
+    width: 96.1vw;
+    height: 6.7vh;
+    left: 2.2vw;
+    top: 4.9vh;
+    position: absolute;
+}
+
+#whatILabel {
+    font-size: 28px;
+    font-family: Georgia, serif;
+}
+
+#predictedDigit {
+    font-size: 57px;
+    font-family: Georgia, serif;
+}
+
+#confidenceScore {
+    font-size: 28px;
+    font-family: Georgia, serif;
+}
+
+#clearBtn {
+    background-color: #ffffff;
+    width: 17.8vw;
+    height: 7.4vh;
+    left: 78.3vw;
+    top: 72.1vh;
+    position: absolute;
+}
+
+#recognizeBtn {
+    background-color: #ffffff;
+    width: 17.8vw;
+    height: 7.4vh;
+    left: 57.2vw;
+    top: 72.1vh;
+    position: absolute;
 }
