@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digit Recognizer</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
 </head>
 <body>
-    <div id="demo-digit-recognizer" class="label">Demo Digit Recognizer</div>
-    <div id="what-i-understood" class="container"></div>
-    <button id="clear" class="button" onclick="clearAll(event)">Clear</button>
-    <button id="recognize" class="button" onclick="recognizeDraw(event)">Recognize</button>
-    <div id="confidence-score" class="label">Confidence score -> 0</div>
-    <div id="predicted-digit" class="label">Your number is N/A</div>
-    <div id="draw-here-label" class="label">Draw your number here</div>
-    <div id="what-i-understood-label" class="label">What I understood</div>
-    <canvas id="drawHere" class="canvas"></canvas>
+    <div class="label" id="demo-digit-recognizer" style="left: 2.2%; top: 4.8%; width: 96.1%; height: 6.6%; font-size: 51px; font-family: Georgia, serif; text-align: center; border-radius: 14px; box-shadow: 0 0 0 3px rgba(59,130,246,0.4); text-shadow: 1px 1px 0 rgba(0,0,0,0.50);">Demo Digit Recognizer</div>
+    <div class="container" id="what-i-understood" style="left: 54.4%; top: 17.7%; width: 43.9%; height: 50.8%; box-shadow: 0 0 0 3px rgba(59,130,246,0.4);"></div>
+    <button class="button" id="clear" onclick="clearAll(event)" style="left: 78.3%; top: 71.8%; width: 17.8%; height: 8.1%; background-color: #62a0ea; color: #ffffff;">Clear</button>
+    <button class="button" id="recognize" onclick="recognizeDraw(event)" style="left: 57.2%; top: 71.8%; width: 17.8%; height: 7.7%; background-color: #26a269; color: #ffffff;">Recognize</button>
+    <div class="label" id="confidence-score" style="left: 65.0%; top: 49.2%; width: 21.7%; height: 4.6%; font-size: 28px; text-align: center;">Confidence score -> 0</div>
+    <div class="label" id="predicted-digit" style="left: 56.1%; top: 32.3%; width: 40.6%; height: 11.8%; font-size: 57px; text-align: center;">Your number is N/A</div>
+    <div class="label" id="draw-here-label" style="left: 5.6%; top: 71.8%; width: 43.3%; height: 7.7%; font-size: 52px; font-family: 'Helvetica Neue', sans-serif; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.12);">Draw your number here</div>
+    <div class="label" id="what-i-understood-label" style="left: 66.1%; top: 22.6%; width: 18.7%; height: 4.2%; font-size: 28px; text-align: center; text-shadow: 1px 1px 0 rgba(0,0,0,0.50);">What I understood</div>
+    <canvas class="canvas" id="draw-here" width="712" height="520" style="left: 2.2%; top: 16.9%; width: 49.4%; height: 52.4%; background-color: #000000; box-shadow: 0 4px 8px 0 rgba(255,255,255,0.12);"></canvas>
     <script src="script.js"></script>
 </body>
 </html>
