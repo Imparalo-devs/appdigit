@@ -1,3 +1,4 @@
+import { recognize } from './recognition.js';
 let model;
 let loading = false;
 let canvas = document.getElementById('drawHere');
@@ -20,7 +21,7 @@ function recognizeDraw(event) {
     if (loading) return;
     loading = true;
     const tensor = preprocessImage(canvas);
-    model.predict(tensor).then((predictions) => {
+    recognize(tensor).then((predictions) => {
         const predictedDigitIndex = predictions.argMax(-1);
         const confidence = predictions.max(-1);
         predictedDigit.textContent = predictedDigitIndex.toString();
