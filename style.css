@@ -1,94 +1,101 @@
-#demo-digit-recognizer {
+.demo-digit-recognizer {
     position: absolute;
     left: 2.2%;
-    top: 4.9%;
+    top: 4.8%;
     width: 96.1%;
-    height: 6.7%;
+    height: 6.6%;
+    background-color: transparent;
     font-size: 51px;
     font-family: Georgia, serif;
+    text-align: center;
     border-radius: 14px;
-    background-color: transparent;
-    color: #64748b;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.50);
 }
 
-#what-i-understood {
+.what-i-understood {
     position: absolute;
     left: 54.4%;
-    top: 18.0%;
+    top: 17.7%;
     width: 43.9%;
-    height: 51.6%;
+    height: 50.8%;
     background-color: transparent;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
 }
 
-#clear {
+.what-i-understood-label {
     position: absolute;
-    left: 78.3%;
-    top: 72.1%;
-    width: 17.8%;
-    height: 7.4%;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 8.3%;
     background-color: transparent;
-    border: 1px solid #3584e4;
-    color: #3584e4;
     font-size: 28px;
+    text-align: center;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.50);
 }
 
-#recognize {
+.your-number-is-na {
     position: absolute;
-    left: 57.2%;
-    top: 72.1%;
-    width: 17.8%;
-    height: 7.4%;
+    left: 0;
+    top: 15.7%;
+    width: 100%;
+    height: 23.4%;
     background-color: transparent;
-    border: 1px solid #26a269;
-    color: #26a269;
-    font-size: 28px;
-}
-
-#confidence-score {
-    position: absolute;
-    left: 65.0%;
-    top: 50.0%;
-    width: 21.7%;
-    height: 4.7%;
-    font-size: 28px;
-    color: #64748b;
-}
-
-#predicted-digit {
-    position: absolute;
-    left: 56.1%;
-    top: 32.8%;
-    width: 40.6%;
-    height: 12.0%;
     font-size: 57px;
-    color: #f5c211;
+    text-align: center;
 }
 
-#draw-here-label {
+.confidence-score {
     position: absolute;
-    left: 5.6%;
-    top: 73.0%;
-    width: 43.3%;
-    height: 6.6%;
-    font-size: 52px;
-    color: #64748b;
-}
-
-#what-i-understood-label {
-    position: absolute;
-    left: 66.1%;
-    top: 23.0%;
-    width: 18.7%;
-    height: 4.3%;
+    left: 0;
+    top: 45.7%;
+    width: 100%;
+    height: 9.1%;
+    background-color: transparent;
     font-size: 28px;
-    color: #64748b;
+    text-align: center;
 }
 
-#drawHere {
+.draw-here {
     position: absolute;
     left: 2.2%;
-    top: 17.2%;
+    top: 16.9%;
     width: 49.4%;
-    height: 53.3%;
-    border: 1px solid #000000;
+    height: 52.4%;
+    background-color: #000000;
+    box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.12);
+}
+
+.draw-your-number-here {
+    position: absolute;
+    left: 5.6%;
+    top: 71.8%;
+    width: 43.3%;
+    height: 7.7%;
+    background-color: transparent;
+    font-size: 52px;
+    font-family: 'Helvetica Neue', sans-serif;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.clear-button {
+    position: absolute;
+    left: 78.3%;
+    top: 71.8%;
+    width: 17.8%;
+    height: 8.1%;
+    background-color: #62a0ea;
+    color: #ffffff;
+}
+
+.recognize-button {
+    position: absolute;
+    left: 57.2%;
+    top: 71.8%;
+    width: 17.8%;
+    height: 7.7%;
+    background-color: #26a269;
+    color: #ffffff;
 }
