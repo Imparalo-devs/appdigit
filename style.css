@@ -1,6 +1,7 @@
 .container {
     position: absolute;
 }
+
 #drawHere {
     left: 2.2%;
     top: 18.0%;
@@ -8,6 +9,7 @@
     height: 51.6%;
     background-color: #000000;
 }
+
 #whatIUnderstood {
     left: 54.4%;
     top: 18.0%;
@@ -15,9 +17,11 @@
     height: 51.6%;
     background-color: #ffffff;
 }
+
 .label {
     position: absolute;
 }
+
 #demoDigitRecognizer {
     left: 2.2%;
     top: 4.9%;
@@ -28,6 +32,7 @@
     font-family: Georgia, serif;
     border-radius: 14px;
 }
+
 #confidenceScore {
     left: 65.0%;
     top: 50.0%;
@@ -36,6 +41,7 @@
     background-color: #ffffff;
     font-size: 28px;
 }
+
 #predictedDigit {
     left: 56.1%;
     top: 32.8%;
@@ -44,6 +50,7 @@
     background-color: #ffffff;
     font-size: 57px;
 }
+
 #drawLabel {
     left: 5.6%;
     top: 73.0%;
@@ -52,7 +59,8 @@
     background-color: #ffffff;
     font-size: 52px;
 }
-#whatILabel {
+
+#whatIUnderstoodLabel {
     left: 66.1%;
     top: 23.0%;
     width: 18.7%;
@@ -60,19 +68,23 @@
     background-color: #ffffff;
     font-size: 28px;
 }
+
 .button {
     position: absolute;
-    background-color: #ffffff;
 }
+
 #clearBtn {
     left: 78.3%;
     top: 72.1%;
     width: 17.8%;
     height: 7.4%;
+    background-color: #ffffff;
 }
+
 #recognizeBtn {
     left: 57.2%;
     top: 72.1%;
     width: 17.8%;
     height: 7.4%;
+    background-color: #ffffff;
 }
