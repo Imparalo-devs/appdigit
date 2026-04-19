@@ -1,32 +1,30 @@
+import { recognize } from './recognition.js';
 let model;
-let loading = true;
+let loading = false;
 let canvas = document.getElementById('drawHere');
 let ctx = canvas.getContext('2d');
-let predictedDigit = document.getElementById('predicted-digit');
-let confidenceScore = document.getElementById('confidence-score');
+let predictedDigit = document.getElementById('Your number is N/A');
+let confidenceScore = document.getElementById('Confidence score -> 0');
 
-ctx.strokeStyle = '#ffffff';
+ctx.strokeStyle = '#e5a50a';
 ctx.lineWidth = 12;
 ctx.lineCap = 'round';
 ctx.lineJoin = 'round';
 
-let drawing = false;
-let lastX, lastY;
-
 function clearAll(event) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    predictedDigit.textContent = '—';
-    confidenceScore.textContent = '—';
+    predictedDigit.textContent = 'N/A';
+    confidenceScore.textContent = '0';
 }
 
 function recognizeDraw(event) {
     if (loading) return;
     loading = true;
     const tensor = preprocessImage(canvas);
-    model.predict(tensor).then(predictions => {
-        const predicted = predictions.argMax(-1);
+    recognize(tensor).then((predictions) => {
+        const predictedDigitIndex = predictions.argMax(-1);
         const confidence = predictions.max(-1);
-        predictedDigit.textContent = predicted.toString();
+        predictedDigit.textContent = predictedDigitIndex.toString();
         confidenceScore.textContent = (confidence * 100).toFixed(1) + '%';
         loading = false;
     });
@@ -40,41 +38,16 @@ function preprocessImage(canvas) {
     tempCtx.drawImage(canvas, 0, 0, 28, 28);
     const imageData = tempCtx.getImageData(0, 0, 28, 28);
     const pixels = imageData.data;
-    const grayscale = [];
+    const grayscalePixels = new Uint8Array(28 * 28);
     for (let i = 0; i < pixels.length; i += 4) {
-        const gray = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
-        grayscale.push(gray / 255);
+        const grayscale = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
+        grayscalePixels[i / 4] = grayscale;
     }
-    return tf.tensor4d(grayscale, [1, 28, 28, 1]);
+    const tensor = tf.tensor3d(grayscalePixels, [28, 28, 1]).toFloat().div(255);
+    return tensor;
 }
 
-async function loadModel() {
-    model = await tf.loadLayersModel('./tfjs_model/model.json');
-    loading = false;
-}
-
-loadModel().catch((error) => console.error('Error loading model:', error));
-
-canvas.addEventListener('pointerdown', (e) => {
-    drawing = true;
-    lastX = e.clientX;
-    lastY = e.clientY;
-});
-
-canvas.addEventListener('pointermove', (e) => {
-    if (!drawing) return;
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
-    ctx.lineTo(x, y);
-    ctx.stroke();
-    lastX = x;
-    lastY = y;
-});
-
-canvas.addEventListener('pointerup', () => {
-    drawing = false;
-    recognizeDraw(event);
+import { loadModel } from './model_loader.js';
+loadModel().then(async (loadedModel) => {
+    model = loadedModel;
 });
