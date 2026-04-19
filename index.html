@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digit Recognizer</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+    <title>Demo Digit Recognizer</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhF4AAAAASUVORK5CYII=">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
 </head>
 <body>
-    <div class="container" id="drawHere" style="left: 2.2%; top: 18.0%; width: 50.0%; height: 51.6%; background-color: #000000;"></div>
-    <label id="demoDigitRecognizer" style="left: 2.2%; top: 4.9%; width: 96.1%; height: 6.7%; background-color: #ffffff; font-size: 51px; font-family: Georgia, serif; border-radius: 14px;">Demo Digit Recognizer</label>
-    <div class="container" id="whatIUnderstood" style="left: 54.4%; top: 18.0%; width: 43.9%; height: 51.6%; background-color: #ffffff;"></div>
-    <button id="clear" onclick="clearAll(event)">Clear</button>
-    <button id="recognize" onclick="recognizeDraw(event)">Recognize</button>
-    <label id="confidenceScore" style="left: 65.0%; top: 50.0%; width: 21.7%; height: 4.7%; background-color: #ffffff; font-size: 28px;">Confidence score -> 0</label>
-    <label id="predictedDigit" style="left: 56.1%; top: 32.8%; width: 40.6%; height: 12.0%; background-color: #ffffff; font-size: 57px;">Your number is N/A</label>
-    <label id="drawYourNumberHere" style="left: 5.6%; top: 73.0%; width: 43.3%; height: 6.6%; background-color: #ffffff; font-size: 52px;">Draw your number here</label>
-    <label id="whatIUnderstoodLabel" style="left: 66.1%; top: 23.0%; width: 18.7%; height: 4.3%; background-color: #ffffff; font-size: 28px;">What I understood</label>
+    <label id="demoLabel" class="demoLabel">Demo Digit Recognizer</label>
+    <div id="whatIUnderstood" class="whatIUnderstood">
+        <label id="whatIUnderstoodLabel" class="whatIUnderstoodLabel">What I understood</label>
+        <label id="confidenceScoreLabel" class="confidenceScoreLabel">Confidence score -> 0</label>
+        <label id="predictedDigitLabel" class="predictedDigitLabel">Your number is N/A</label>
+    </div>
+    <canvas id="drawHere" class="drawHere"></canvas>
+    <label id="drawLabel" class="drawLabel">Draw your number here</label>
+    <button id="clearBtn" class="clearBtn" onclick="clearAll(event)">Clear</button>
+    <button id="recognizeBtn" class="recognizeBtn" onclick="recognizeDraw(event)">Recognize</button>
     <script src="script.js"></script>
 </body>
 </html>
