@@ -2,10 +2,16 @@ let model;
 let loading = false;
 let drawingCanvas = document.getElementById('drawingCanvas');
 let context = drawingCanvas.getContext('2d');
+let predictedDigit = document.getElementById('predictedDigit');
+let confidenceScore = document.getElementById('confidenceScore');
+let clearBtn = document.getElementById('clearBtn');
+let recognizeBtn = document.getElementById('recognizeBtn');
+
 context.strokeStyle = '#ffffff';
 context.lineWidth = 12;
 context.lineCap = 'round';
 context.lineJoin = 'round';
+
 let isDrawing = false;
 drawingCanvas.addEventListener('pointerdown', (e) => {
     isDrawing = true;
@@ -22,40 +28,44 @@ drawingCanvas.addEventListener('pointerup', () => {
     isDrawing = false;
     recognizeDraw();
 });
+
 async function loadModel() {
     loading = true;
     model = await loadModelKeras3('./tfjs_model/model.json');
     loading = false;
 }
+
 loadModel();
+
 function clearAll() {
     context.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
-    document.getElementById('predictedDigit').textContent = '—';
-    document.getElementById('confidenceScore').textContent = '—';
+    predictedDigit.textContent = 'N/A';
+    confidenceScore.textContent = '0';
 }
+
 function recognizeDraw() {
     if (loading) return;
-    const tensor = tf.tidy(() => {
-        const canvas = document.createElement('canvas');
+    let tensor = tf.tidy(() => {
+        let canvas = document.createElement('canvas');
         canvas.width = 28;
         canvas.height = 28;
-        const ctx = canvas.getContext('2d');
+        let ctx = canvas.getContext('2d');
         ctx.drawImage(drawingCanvas, 0, 0, 28, 28);
-        const imageData = ctx.getImageData(0, 0, 28, 28);
-        const data = new Uint8Array(28 * 28);
+        let imageData = ctx.getImageData(0, 0, 28, 28);
+        let grayscale = new Uint8Array(28 * 28);
         for (let i = 0; i < 28 * 28; i++) {
-            data[i] = imageData.data[i * 4];
+            let index = i * 4;
+            let gray = (imageData.data[index] + imageData.data[index + 1] + imageData.data[index + 2]) / 3;
+            grayscale[i] = gray;
         }
-        return tf.tensor4d(data, [1, 28, 28, 1]).toFloat().div(255);
+        let tensor = tf.tensor3d(grayscale, [28, 28, 1]);
+        tensor = tensor.toFloat().div(255);
+        return tensor;
     });
-    model.predict(tensor).then((predictions) => {
-        try {
-        const confidence = predictions.dataSync()[0];
-        const digit = predictions.argMax().dataSync()[0];
-        document.getElementById('predictedDigit').textContent = digit.toString();
-        document.getElementById('confidenceScore').textContent = `Confidence score -> ${(confidence * 100).toFixed(1)}%`;
-        } catch (error) {
-          console.error('Error in recognizeDraw:', error);
-        }
+    await model.predict(tensor).then((predictions) => {
+        let confidence = predictions.dataSync()[0];
+        let digit = predictions.argMax().dataSync()[0];
+        predictedDigit.textContent = digit;
+        confidenceScore.textContent = (confidence * 100).toFixed(1) + '%';
     });
 }
