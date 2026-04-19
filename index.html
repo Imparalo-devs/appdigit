@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Digit Recognizer</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Digit Recognizer</title>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <label id="demoLabel" class="demoLabel">Demo Digit Recognizer</label>
-    <div id="whatIUnderstood" class="whatIUnderstood">
-        <label id="whatIUnderstoodLabel" class="whatIUnderstoodLabel">What I understood</label>
-        <label id="confidenceScoreLabel" class="confidenceScoreLabel">Confidence score -> 0</label>
-        <label id="predictedDigitLabel" class="predictedDigitLabel">Your number is N/A</label>
-    </div>
-    <canvas id="drawHere" class="drawHere"></canvas>
-    <label id="drawLabel" class="drawLabel">Draw your number here</label>
-    <button id="clearBtn" class="clearBtn" onclick="clearAll(event)">Clear</button>
-    <button id="recognizeBtn" class="recognizeBtn" onclick="recognizeDraw(event)">Recognize</button>
+    <div id="demo-digit-recognizer" class="label">Demo Digit Recognizer</div>
+    <div id="what-i-understood" class="container"></div>
+    <button id="clear" class="button" onclick="clearAll(event)">Clear</button>
+    <button id="recognize" class="button" onclick="recognizeDraw(event)">Recognize</button>
+    <div id="confidence-score" class="label">Confidence score -> 0</div>
+    <div id="predicted-digit" class="label">Your number is N/A</div>
+    <div id="draw-here-label" class="label">Draw your number here</div>
+    <div id="what-i-understood-label" class="label">What I understood</div>
+    <canvas id="drawHere" class="canvas"></canvas>
     <script src="script.js"></script>
 </body>
 </html>

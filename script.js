@@ -1,34 +1,38 @@
 let model;
-let loading = false;
+let loading = true;
 let canvas = document.getElementById('drawHere');
 let ctx = canvas.getContext('2d');
-let predictedDigitLabel = document.getElementById('predictedDigitLabel');
-let confidenceScoreLabel = document.getElementById('confidenceScoreLabel');
+let predictedDigit = document.getElementById('predicted-digit');
+let confidenceScore = document.getElementById('confidence-score');
 
 ctx.strokeStyle = '#ffffff';
 ctx.lineWidth = 12;
 ctx.lineCap = 'round';
 ctx.lineJoin = 'round';
 
-// Load TensorFlow.js model
-async function loadModel() {
-    loading = true;
-    model = await tf.loadLayersModel('./tfjs_model/model.json');
-    loading = false;
-}
+let drawing = false;
+let lastX, lastY;
 
-loadModel();
-
-// Clear canvas
 function clearAll(event) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    predictedDigitLabel.textContent = 'Your number is N/A';
-    confidenceScoreLabel.textContent = 'Confidence score -> 0';
+    predictedDigit.textContent = '—';
+    confidenceScore.textContent = '—';
 }
 
-// Recognize drawn digit
 function recognizeDraw(event) {
     if (loading) return;
+    loading = true;
+    const tensor = preprocessImage(canvas);
+    model.predict(tensor).then(predictions => {
+        const predicted = predictions.argMax(-1);
+        const confidence = predictions.max(-1);
+        predictedDigit.textContent = predicted.toString();
+        confidenceScore.textContent = (confidence * 100).toFixed(1) + '%';
+        loading = false;
+    });
+}
+
+function preprocessImage(canvas) {
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = 28;
     tempCanvas.height = 28;
@@ -36,33 +40,41 @@ function recognizeDraw(event) {
     tempCtx.drawImage(canvas, 0, 0, 28, 28);
     const imageData = tempCtx.getImageData(0, 0, 28, 28);
     const pixels = imageData.data;
-    const grayscalePixels = new Uint8Array(28 * 28);
+    const grayscale = [];
     for (let i = 0; i < pixels.length; i += 4) {
         const gray = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
-        grayscalePixels[i / 4] = gray;
+        grayscale.push(gray / 255);
     }
-    const tensor = tf.tensor3d(grayscalePixels, [28, 28, 1]).reshape([1, 28, 28, 1]).toFloat().div(255);
-    tf.tidy(() => {
-        try { const output = await model.predict(tensor); } catch (error) { console.error(error); }
-        const probabilities = (await output.data());
-        const predictedDigit = probabilities.indexOf(Math.max(...(probabilities || [])));
-        const confidence = Math.max(...probabilities);
-        predictedDigitLabel.textContent = `Your number is ${predictedDigit}`;
-        confidenceScoreLabel.textContent = `Confidence score -> ${(confidence * 100).toFixed(1)}%`;
-    });
+    return tf.tensor4d(grayscale, [1, 28, 28, 1]);
 }
 
-// Draw on canvas
+async function loadModel() {
+    model = await tf.loadLayersModel('./tfjs_model/model.json');
+    loading = false;
+}
+
+loadModel().catch((error) => console.error('Error loading model:', error));
+
 canvas.addEventListener('pointerdown', (e) => {
-    ctx.beginPath();
-    ctx.moveTo(e.clientX - canvas.getBoundingClientRect().left, e.clientY - canvas.getBoundingClientRect().top);
+    drawing = true;
+    lastX = e.clientX;
+    lastY = e.clientY;
 });
 
 canvas.addEventListener('pointermove', (e) => {
-    if (e.buttons === 1) {
-        ctx.lineTo(e.clientX - canvas.getBoundingClientRect().left, e.clientY - canvas.getBoundingClientRect().top);
-        ctx.stroke();
-    }
+    if (!drawing) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    lastX = x;
+    lastY = y;
 });
 
-canvas.addEventListener('pointerup', async (e) => { await recognizeDraw(e); });
+canvas.addEventListener('pointerup', () => {
+    drawing = false;
+    recognizeDraw(event);
+});
