@@ -8,18 +8,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="drawHere" class="container">
+    <div class="container" id="drawHere" style="left: 2.2%; top: 18.0%; width: 50.0%; height: 51.6%; background-color: #000000;">
         <canvas id="drawingCanvas" width="300" height="300"></canvas>
-        <label id="drawLabel">Draw your number here</label>
+        <label id="drawLabel" style="font-size: 52px;">Draw your number here</label>
     </div>
-    <div id="whatIUnderstood" class="container">
-        <label id="demoLabel">Demo Digit Recognizer</label>
-        <label id="whatILabel">What I understood</label>
-        <label id="predictedDigit" name="predictedDigit">Your number is N/A</label>
-        <label id="confidenceScore" name="confidenceScore">Confidence score -> 0</label>
+    <div class="container" id="whatIUnderstood" style="left: 54.4%; top: 18.0%; width: 43.9%; height: 51.6%; background-color: #ffffff;">
+        <label id="demoLabel" style="font-size: 51px; font-family: Georgia, serif; border-radius: 14px;">Demo Digit Recognizer</label>
+        <label id="whatILabel" style="font-size: 28px;">What I understood</label>
+        <label id="predictedDigit" style="font-size: 57px;">Your number is N/A</label>
+        <label id="confidenceScore" style="font-size: 28px;">Confidence score -> 0</label>
     </div>
-    <button id="clearBtn" onclick="clearAll(event)">Clear</button>
-    <button id="recognizeBtn" onclick="recognizeDraw(event)">Recognize</button>
+    <button id="clearBtn" onclick="clearAll(event)" style="left: 78.3%; top: 72.1%; width: 17.8%; height: 7.4%; background-color: #ffffff;">Clear</button>
+    <button id="recognizeBtn" onclick="recognizeDraw(event)" style="left: 57.2%; top: 72.1%; width: 17.8%; height: 7.4%; background-color: #ffffff;">Recognize</button>
     <script src="script.js"></script>
 </body>
 </html>
