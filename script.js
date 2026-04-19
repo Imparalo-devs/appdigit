@@ -22,8 +22,8 @@ async function loadModel() {
 // Clear canvas
 function clearAll(event) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    predictedDigit.textContent = '—';
-    confidenceScore.textContent = '—';
+    predictedDigit.textContent = 'â';
+    confidenceScore.textContent = 'â';
 }
 
 // Recognize drawn digit
@@ -55,7 +55,13 @@ async function recognizeDraw() {
 }
 
 // Load model on page load
-await try { await loadModel(); } catch (error) { console.error('Error loading model:', error); }
+(async () => {
+  try {
+    await loadModel();
+  } catch (error) {
+    console.error('Error loading model:', error);
+  }
+})();
 
 // Handle user drawing on canvas
 canvas.addEventListener('pointerdown', (event) => {
