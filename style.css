@@ -6,6 +6,9 @@ body {
 #drawHere {
     position: absolute;
     border: none;
+    width: "280";
+    height: "280";
+    background-color: black;
 }
 
 #demoDigitRecognizer {
