@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digit Recognizer</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
 </head>
 <body>
-    <div id="demo-digit-recognizer" class="label">Demo Digit Recognizer</div>
-    <div id="what-i-understood" class="container"></div>
-    <button id="clear" class="button" onclick="clearAll(event)">Clear</button>
-    <button id="recognize" class="button" onclick="recognizeDraw(event)">Recognize</button>
-    <div id="confidence-score" class="label">Confidence score -> 0</div>
-    <div id="predicted-digit" class="label">Your number is N/A</div>
-    <div id="draw-here-label" class="label">Draw your number here</div>
-    <div id="what-i-understood-label" class="label">What I understood</div>
-    <canvas id="drawHere" class="canvas"></canvas>
+    <div id="Demo Digit Recognizer" class="demo-digit-recognizer">Demo Digit Recognizer</div>
+    <div id="whatIUnderstood" class="what-i-understood">
+        <div id="What I understood" class="what-i-understood-label">What I understood</div>
+        <div id="Your number is N/A" class="your-number-is-na">Your number is N/A</div>
+        <div id="Confidence score -> 0" class="confidence-score">Confidence score -> 0</div>
+    </div>
+    <canvas id="drawHere" class="draw-here" width="712" height="520"></canvas>
+    <div id="Draw your number here" class="draw-your-number-here">Draw your number here</div>
+    <button id="Clear" class="clear-button" onclick="clearAll(event)">Clear</button>
+    <button id="Recognize" class="recognize-button" onclick="recognizeDraw(event)">Recognize</button>
     <script src="script.js"></script>
 </body>
 </html>
