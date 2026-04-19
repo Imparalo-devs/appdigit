@@ -1,4 +1,5 @@
 import { recognize } from './recognition.js';
+import { loadModel } from './model_loader.js';
 let model;
 let loading = false;
 let canvas = document.getElementById('drawHere');
@@ -47,7 +48,7 @@ function preprocessImage(canvas) {
     return tensor;
 }
 
-import { loadModel } from './model_loader.js';
+
 loadModel().then(async (loadedModel) => {
     model = loadedModel;
 });
