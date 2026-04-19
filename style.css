@@ -1,94 +1,53 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
 #demo-digit-recognizer {
-    position: absolute;
-    left: 2.2%;
-    top: 4.9%;
-    width: 96.1%;
-    height: 6.7%;
+    background-color: transparent;
     font-size: 51px;
     font-family: Georgia, serif;
     border-radius: 14px;
-    background-color: transparent;
-    color: #64748b;
 }
 
 #what-i-understood {
-    position: absolute;
-    left: 54.4%;
-    top: 18.0%;
-    width: 43.9%;
-    height: 51.6%;
     background-color: transparent;
-}
-
-#clear {
-    position: absolute;
-    left: 78.3%;
-    top: 72.1%;
-    width: 17.8%;
-    height: 7.4%;
-    background-color: transparent;
-    border: 1px solid #3584e4;
-    color: #3584e4;
-    font-size: 28px;
-}
-
-#recognize {
-    position: absolute;
-    left: 57.2%;
-    top: 72.1%;
-    width: 17.8%;
-    height: 7.4%;
-    background-color: transparent;
-    border: 1px solid #26a269;
-    color: #26a269;
-    font-size: 28px;
-}
-
-#confidence-score {
-    position: absolute;
-    left: 65.0%;
-    top: 50.0%;
-    width: 21.7%;
-    height: 4.7%;
-    font-size: 28px;
-    color: #64748b;
-}
-
-#predicted-digit {
-    position: absolute;
-    left: 56.1%;
-    top: 32.8%;
-    width: 40.6%;
-    height: 12.0%;
-    font-size: 57px;
-    color: #f5c211;
-}
-
-#draw-here-label {
-    position: absolute;
-    left: 5.6%;
-    top: 73.0%;
-    width: 43.3%;
-    height: 6.6%;
-    font-size: 52px;
-    color: #64748b;
 }
 
 #what-i-understood-label {
-    position: absolute;
-    left: 66.1%;
-    top: 23.0%;
-    width: 18.7%;
-    height: 4.3%;
+    background-color: transparent;
     font-size: 28px;
-    color: #64748b;
+}
+
+#your-number-is {
+    background-color: transparent;
+    font-size: 57px;
+}
+
+#confidence-score {
+    background-color: transparent;
+    font-size: 28px;
 }
 
 #drawHere {
-    position: absolute;
-    left: 2.2%;
-    top: 17.2%;
-    width: 49.4%;
-    height: 53.3%;
-    border: 1px solid #000000;
+    background-color: #000000;
+    border: none;
+}
+
+#draw-your-number-here {
+    background-color: transparent;
+    font-size: 52px;
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+#clear {
+    background-color: #62a0ea;
+    border: none;
+    color: #ffffff;
+}
+
+#recognize {
+    background-color: #26a269;
+    border: none;
+    color: #ffffff;
 }
