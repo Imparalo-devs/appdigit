@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digit Recognizer</title>
-    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="drawHere" class="container"></div>
@@ -15,8 +15,8 @@
     <button id="recognizeBtn" class="button" onclick="recognizeDraw(event)">Recognize</button>
     <label id="confidenceScore" class="label">Confidence score -> 0</label>
     <label id="predictedDigit" class="label">Your number is N/A</label>
-    <label id="drawLabel" class="label">Draw your number here</label>
-    <label id="whatILabel" class="label">What I understood</label>
+    <label id="drawHereLabel" class="label">Draw your number here</label>
+    <label id="whatIUnderstoodLabel" class="label">What I understood</label>
     <canvas id="drawingCanvas" width="300" height="300"></canvas>
     <script src="script.js"></script>
 </body>
