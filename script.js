@@ -27,7 +27,7 @@ function clearAll(event) {
 }
 
 // Recognize drawn digit
-function recognizeDraw(event) {
+async function recognizeDraw(event) {
     if (loading) return;
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = 28;
@@ -42,12 +42,15 @@ function recognizeDraw(event) {
         grayscalePixels[i / 4] = gray;
     }
     const tensor = tf.tensor3d(grayscalePixels, [28, 28, 1]).toFloat().div(255);
-    await model.predict(tensor).then((predictions) => { try {
-        const confidence = predictions.max().dataSync()[0];
-        const digit = predictions.argMax().dataSync()[0];
+    const predictions = await model.predict(tensor);
+    try {
+        const confidence = (await predictions.max().data()).values[0];
+        const digit = (await predictions.argMax().data()).values[0];
         predictedDigit.textContent = digit.toString();
         confidenceScore.textContent = `Confidence score -> ${(confidence * 100).toFixed(1)}%`;
-    });
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 // Handle pointer events
