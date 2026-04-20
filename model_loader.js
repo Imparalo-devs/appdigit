@@ -1,6 +1,6 @@
 export async function loadModel() {
     try {
-        const model = await tf.loadGraphModel('/tfjs_model/model.json'); // Use /tfjs_model/ prefix
+        const model = await tf.loadGraphModel('./tfjs_model/model.json');
         return model;
     } catch (err) {
         console.error('Model load failed:', err);
