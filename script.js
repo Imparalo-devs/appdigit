@@ -56,12 +56,23 @@ function recognizeDraw(event) {
 }
 
 function preprocessImage(canvas) {
+    console.log('.Canvas raw data:', canvas.toDataURL());
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = 28;
     tempCanvas.height = 28;
     const tempCtx = tempCanvas.getContext('2d');
     tempCtx.drawImage(canvas, 0, 0, 28, 28);
+    
+    // Debug canvas dopo resize
+    const debugCanvas = document.createElement('canvas');
+    debugCanvas.width = 100; debugCanvas.height = 100;
+    const debugCtx = debugCanvas.getContext('2d');
+    debugCtx.drawImage(tempCanvas, 0, 0, 100, 100);
+    document.body.appendChild(debugCanvas); // Mostra immagine preprocessed
+    
     const imageData = tempCtx.getImageData(0, 0, 28, 28);
+    console.log('Pixel raw values:', Array.from(imageData.data).slice(0, 20)); // Primi 20 pixel
+    
     const pixels = imageData.data;
     const grayscalePixels = new Uint8Array(28 * 28);
     for (let i = 0; i < pixels.length; i += 4) {
