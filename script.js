@@ -36,7 +36,9 @@ function recognizeDraw(event) {
             const predictedDigitIndex = predictions.argMax(-1);
             const confidence = predictions.max(-1);
             
-            console.log('Raw prediction values:', await predictions.data());
+            predictions.data().then(data => {
+                console.log('Raw prediction values:', Array.from(data));
+            });
             console.log('Final prediction:', {
                 digit: predictedDigitIndex,
                 confidence: confidence
