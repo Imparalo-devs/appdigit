@@ -1,6 +1,6 @@
 import { recognize } from './recognition.js';
 let model;
-let loading = false;
+let loading = true; // Add this flag
 let canvas = document.getElementById('drawHere');
 let ctx = canvas.getContext('2d');
 let predictedDigit = document.getElementById('Your number is N/A');
@@ -51,6 +51,8 @@ function preprocessImage(canvas) {
 import { loadModel } from './model_loader.js';
 loadModel().then(async (loadedModel) => {
     model = loadedModel;
+    loading = false;
+    document.getElementById('Recognize').disabled = false; // Enable button
 });
 document.getElementById('Recognize').addEventListener('click', recognizeDraw);
 document.getElementById('Clear').addEventListener('click', clearAll);
