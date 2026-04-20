@@ -30,31 +30,17 @@ function recognizeDraw(event) {
     const tensor = preprocessImage(canvas);
     console.log('Tensor created with shape:', tensor.shape);
     
-    try {
-        recognize(tensor).then((predictions) => {
-            console.log('Predictions received:', predictions);
-            const predictedDigitIndex = predictions.argMax(-1);
-            const confidence = predictions.max(-1);
-            
-            predictions.data().then(data => {
-                console.log('Raw prediction values:', Array.from(data));
-            });
-            console.log('Final prediction:', {
-                digit: predictedDigitIndex,
-                confidence: confidence
-            });
-            
-            predictedDigit.textContent = predictedDigitIndex.toString();
-            confidenceScore.textContent = (confidence * 100).toFixed(1) + '%';
-            loading = false;
-        }).catch((err) => {
-            console.error('Error during recognition:', err, 'Stack:', err.stack);
-            loading = false;
-        });
-    } catch (err) {
-        console.error('Error calling recognize():', err, 'Tensor:', tensor);
+    recognize(tensor).then((data) => {
+        const predictedDigitIndex = data.indexOf(Math.max(...data));
+        const confidence = Math.max(...data);
+        
+        predictedDigit.textContent = predictedDigitIndex;
+        confidenceScore.textContent = (confidence * 100).toFixed(1) + '%';
         loading = false;
-    }
+    }).catch((err) => {
+        console.error('Error during recognition:', err);
+        loading = false;
+    });
 }
 
 function preprocessImage(canvas) {

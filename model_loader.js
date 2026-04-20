@@ -8,3 +8,4 @@ export async function loadModel() {
         alert('Failed to load model. Check console for details.');
     }
 }
+console.log('Model input shape:', window.model.inputs[0].shape);
