@@ -1,8 +1,8 @@
 import { recognize } from './recognition.js';
 let canvas = document.getElementById('drawHere');
 let ctx = canvas.getContext('2d');
-let predictedDigit = document.getElementById('Your number is N/A');
-let confidenceScore = document.getElementById('Confidence score -> 0');
+let predictedDigit = document.getElementById('predicted-digit');
+let confidenceScore = document.getElementById('confidence-score');
 let isDrawing = false;
 let loading = true;
 
@@ -18,16 +18,25 @@ function clearAll(event) {
 }
 
 function recognizeDraw(event) {
+    console.log('Button clicked');
     if (loading) return;
     loading = true;
     const tensor = preprocessImage(canvas);
-    recognize(tensor).then((predictions) => {
-        const predictedDigitIndex = predictions.argMax(-1);
-        const confidence = predictions.max(-1);
-        predictedDigit.textContent = predictedDigitIndex.toString();
-        confidenceScore.textContent = (confidence * 100).toFixed(1) + '%';
+    try {
+        recognize(tensor).then((predictions) => {
+            const predictedDigitIndex = predictions.argMax(-1);
+            const confidence = predictions.max(-1);
+            predictedDigit.textContent = predictedDigitIndex.toString();
+            confidenceScore.textContent = (confidence * 100).toFixed(1) + '%';
+            loading = false;
+        }).catch((err) => {
+            console.error('Error during recognition:', err);
+            loading = false;
+        });
+    } catch (err) {
+        console.error('Error calling recognize():', err);
         loading = false;
-    });
+    }
 }
 
 function preprocessImage(canvas) {
