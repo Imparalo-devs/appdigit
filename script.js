@@ -31,7 +31,7 @@ function recognizeDraw(event) {
     console.log('Tensor created with shape:', tensor.shape);
     
     recognize(tensor).then((data) => {
-        const predictedDigitIndex = data.indexOf(Math.max(...data));
+        const predictedDigitIndex = data.findIndex(d => d === Math.max(...data)); // 🔍 Trova correttamente l'indice
         const confidence = Math.max(...data);
         
         predictedDigit.textContent = predictedDigitIndex;
@@ -67,7 +67,7 @@ function preprocessImage(canvas) {
         const grayscale = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
         grayscalePixels[i / 4] = grayscale;
     }
-    const tensor = tf.tensor3d(grayscalePixels, [28, 28, 1]).toFloat().div(255);
+    const tensor = tf.tensor4d(grayscalePixels, [1, 28, 28, 1]).toFloat().div(255);
     return tensor;
 }
 
