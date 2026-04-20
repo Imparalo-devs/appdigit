@@ -18,6 +18,7 @@ function clearAll(event) {
 }
 
 function recognizeDraw(event) {
+    console.log('Button clicked');
     if (loading) return;
     loading = true;
     const tensor = preprocessImage(canvas);
