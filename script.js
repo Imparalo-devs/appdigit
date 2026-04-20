@@ -88,7 +88,7 @@ function preprocessImage(canvas) {
 import { loadModel } from './model_loader.js';
 loadModel().then(() => {
     console.log('✅ Model loaded successfully:', window.model);
-    console.log('Model architecture:', JSON.stringify(window.model.getWeights(), null, 2));
+    console.log('Model architecture:', JSON.stringify(window.model.weights, null, 2));
     document.getElementById('Recognize').disabled = false;
 }).catch((err) => {
     console.error('❌ Model load failed:', err);
