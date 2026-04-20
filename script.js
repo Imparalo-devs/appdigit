@@ -81,18 +81,31 @@ loadModel().then(() => {
     alert('Could not load model. Check console for details.');
 });
 
-document.getElementById('Recognize').addEventListener('click', recognizeDraw);
-document.getElementById('Clear').addEventListener('click', clearAll);
-canvas.addEventListener('mousedown', (e) => {
+function getScale() {
+    const rect = canvas.getBoundingClientRect();   // dimensioni CSS
+    return {
+        x: canvas.width  / rect.width,   // rapporto pixel reale / CSS
+        y: canvas.height / rect.height
+    };
+}
+
+/* ---------- 2️⃣ Nuovi handler del mouse ---------- */
+canvas.addEventListener('mousedown', e => {
+    const s = getScale();
     isDrawing = true;
     ctx.beginPath();
-    ctx.moveTo(e.offsetX, e.offsetY);
+    ctx.moveTo(e.offsetX * s.x, e.offsetY * s.y);
 });
-canvas.addEventListener('mousemove', (e) => {
-    if (isDrawing) {
-        ctx.lineTo(e.offsetX, e.offsetY);
-        ctx.stroke();
-    }
+
+canvas.addEventListener('mousemove', e => {
+    if (!isDrawing) return;
+    const s = getScale();
+    ctx.lineTo(e.offsetX * s.x, e.offsetY * s.y);
+    ctx.stroke();
 });
-canvas.addEventListener('mouseup', () => isDrawing = false);
-canvas.addEventListener('mouseleave', () => isDrawing = false);
+
+canvas.addEventListener('mouseup',   () => isDrawing = false);
+canvas.addEventListener('mouseleave',()=> isDrawing = false);
+
+document.getElementById('Recognize').addEventListener('click', recognizeDraw);
+document.getElementById('Clear').addEventListener('click', clearAll);
