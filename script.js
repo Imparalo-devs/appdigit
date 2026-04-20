@@ -22,13 +22,21 @@ function recognizeDraw(event) {
     if (loading) return;
     loading = true;
     const tensor = preprocessImage(canvas);
-    recognize(tensor).then((predictions) => {
-        const predictedDigitIndex = predictions.argMax(-1);
-        const confidence = predictions.max(-1);
-        predictedDigit.textContent = predictedDigitIndex.toString();
-        confidenceScore.textContent = (confidence * 100).toFixed(1) + '%';
+    try {
+        recognize(tensor).then((predictions) => {
+            const predictedDigitIndex = predictions.argMax(-1);
+            const confidence = predictions.max(-1);
+            predictedDigit.textContent = predictedDigitIndex.toString();
+            confidenceScore.textContent = (confidence * 100).toFixed(1) + '%';
+            loading = false;
+        }).catch((err) => {
+            console.error('Error during recognition:', err);
+            loading = false;
+        });
+    } catch (err) {
+        console.error('Error calling recognize():', err);
         loading = false;
-    });
+    }
 }
 
 function preprocessImage(canvas) {
