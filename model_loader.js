@@ -1,7 +1,7 @@
 window.model = null;
 export async function loadModel() {
     try {
-        window.model = await tf.loadGraphModel('/tfjs_model/model.json');
+        window.model = await tf.loadGraphModel('./tfjs_model/model.json');
         return window.model;
     } catch (err) {
         console.error('Model load failed:', err);
