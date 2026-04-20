@@ -1,8 +1,8 @@
 import { recognize } from './recognition.js';
 let canvas = document.getElementById('drawHere');
 let ctx = canvas.getContext('2d');
-let predictedDigit = document.getElementById('Your number is N/A');
-let confidenceScore = document.getElementById('Confidence score -> 0');
+let predictedDigit = document.getElementById('predicted-digit');
+let confidenceScore = document.getElementById('confidence-score');
 let isDrawing = false;
 let loading = true;
 
