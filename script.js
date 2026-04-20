@@ -18,23 +18,39 @@ function clearAll(event) {
 }
 
 function recognizeDraw(event) {
-    console.log('Button clicked');
+    console.log('.Button clicked at', new Date().toISOString());
     if (loading) return;
     loading = true;
+    
+    console.log('Current model state:', {
+        loaded: !!window.model,
+        modelType: window.model ? window.model.constructor.name : 'null'
+    });
+    
     const tensor = preprocessImage(canvas);
+    console.log('Tensor created with shape:', tensor.shape);
+    
     try {
         recognize(tensor).then((predictions) => {
+            console.log('Predictions received:', predictions);
             const predictedDigitIndex = predictions.argMax(-1);
             const confidence = predictions.max(-1);
+            
+            console.log('Raw prediction values:', await predictions.data());
+            console.log('Final prediction:', {
+                digit: predictedDigitIndex,
+                confidence: confidence
+            });
+            
             predictedDigit.textContent = predictedDigitIndex.toString();
             confidenceScore.textContent = (confidence * 100).toFixed(1) + '%';
             loading = false;
         }).catch((err) => {
-            console.error('Error during recognition:', err);
+            console.error('Error during recognition:', err, 'Stack:', err.stack);
             loading = false;
         });
     } catch (err) {
-        console.error('Error calling recognize():', err);
+        console.error('Error calling recognize():', err, 'Tensor:', tensor);
         loading = false;
     }
 }
