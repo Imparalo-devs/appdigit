@@ -18,34 +18,61 @@ function clearAll(event) {
 }
 
 function recognizeDraw(event) {
-    console.log('Button clicked');
+    console.log('.Button clicked at', new Date().toISOString());
     if (loading) return;
     loading = true;
+    
+    console.log('Current model state:', {
+        loaded: !!window.model,
+        modelType: window.model ? window.model.constructor.name : 'null'
+    });
+    
     const tensor = preprocessImage(canvas);
+    console.log('Tensor created with shape:', tensor.shape);
+    
     try {
         recognize(tensor).then((predictions) => {
+            console.log('Predictions received:', predictions);
             const predictedDigitIndex = predictions.argMax(-1);
             const confidence = predictions.max(-1);
+            
+            console.log('Raw prediction values:', await predictions.data());
+            console.log('Final prediction:', {
+                digit: predictedDigitIndex,
+                confidence: confidence
+            });
+            
             predictedDigit.textContent = predictedDigitIndex.toString();
             confidenceScore.textContent = (confidence * 100).toFixed(1) + '%';
             loading = false;
         }).catch((err) => {
-            console.error('Error during recognition:', err);
+            console.error('Error during recognition:', err, 'Stack:', err.stack);
             loading = false;
         });
     } catch (err) {
-        console.error('Error calling recognize():', err);
+        console.error('Error calling recognize():', err, 'Tensor:', tensor);
         loading = false;
     }
 }
 
 function preprocessImage(canvas) {
+    console.log('.Canvas raw data:', canvas.toDataURL());
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = 28;
     tempCanvas.height = 28;
     const tempCtx = tempCanvas.getContext('2d');
     tempCtx.drawImage(canvas, 0, 0, 28, 28);
+    
+    // Debug canvas dopo resize
+    const debugCanvas = document.createElement('canvas');
+    debugCanvas.width = 100; debugCanvas.height = 100;
+    const debugCtx = debugCanvas.getContext('2d');
+    debugCtx.drawImage(tempCanvas, 0, 0, 100, 100);
+    document.body.appendChild(debugCanvas); // Mostra immagine preprocessed
+    
     const imageData = tempCtx.getImageData(0, 0, 28, 28);
+    console.log('Pixel raw values:', Array.from(imageData.data).slice(0, 20)); // Primi 20 pixel
+    
     const pixels = imageData.data;
     const grayscalePixels = new Uint8Array(28 * 28);
     for (let i = 0; i < pixels.length; i += 4) {
@@ -59,6 +86,7 @@ function preprocessImage(canvas) {
 import { loadModel } from './model_loader.js';
 loadModel().then(() => {
     console.log('✅ Model loaded successfully:', window.model);
+    console.log('Model architecture:', JSON.stringify(window.model.getWeights(), null, 2));
     document.getElementById('Recognize').disabled = false;
 }).catch((err) => {
     console.error('❌ Model load failed:', err);
