@@ -1,4 +1,10 @@
-function loadModel() {
-    return tf.loadGraphModel('./tfjs_model/model.json');
+import * as tf from '@tensorflow/tfjs';
+export async function loadModel() {
+    try {
+        const model = await tf.loadGraphModel('/tfjs_model/model.json'); // Use /tfjs_model/ prefix
+        return model;
+    } catch (err) {
+        console.error('Model load failed:', err);
+        throw err;
+    }
 }
-export { loadModel };
