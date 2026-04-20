@@ -1,11 +1,10 @@
 import { recognize } from './recognition.js';
-let model;
-let loading = true; // Add this flag
 let canvas = document.getElementById('drawHere');
 let ctx = canvas.getContext('2d');
 let predictedDigit = document.getElementById('Your number is N/A');
 let confidenceScore = document.getElementById('Confidence score -> 0');
 let isDrawing = false;
+let loading = true;
 
 ctx.strokeStyle = '#e5a50a';
 ctx.lineWidth = 12;
@@ -49,14 +48,12 @@ function preprocessImage(canvas) {
 }
 
 import { loadModel } from './model_loader.js';
-loadModel().then(async (loadedModel) => {
-    model = loadedModel;
-    loading = false;
-    document.getElementById('Recognize').disabled = false; // Enable button
+loadModel().then(() => {
+    console.log('✅ Model loaded successfully:', window.model);
+    document.getElementById('Recognize').disabled = false;
 }).catch((err) => {
-    alert('Failed to load model. Check console for details.');
-    console.error('Model load failed:', err);
-    document.getElementById('Recognize').disabled = true; // Disable button if model load fails
+    console.error('❌ Model load failed:', err);
+    alert('Could not load model. Check console for details.');
 });
 document.getElementById('Recognize').addEventListener('click', recognizeDraw);
 document.getElementById('Clear').addEventListener('click', clearAll);
