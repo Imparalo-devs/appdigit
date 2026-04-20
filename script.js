@@ -74,12 +74,13 @@ function preprocessImage(canvas) {
 import { loadModel } from './model_loader.js';
 loadModel().then(() => {
     console.log('✅ Model loaded successfully:', window.model);
-    console.log('Model architecture:', JSON.stringify(window.model.weights, null, 2));
     document.getElementById('Recognize').disabled = false;
+    loading = false;          // ora la UI può avviare il riconoscimento
 }).catch((err) => {
     console.error('❌ Model load failed:', err);
     alert('Could not load model. Check console for details.');
 });
+
 document.getElementById('Recognize').addEventListener('click', recognizeDraw);
 document.getElementById('Clear').addEventListener('click', clearAll);
 canvas.addEventListener('mousedown', (e) => {
