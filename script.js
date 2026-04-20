@@ -1,10 +1,11 @@
 import { recognize } from './recognition.js';
 let model;
-let loading = false;
+let loading = true; // Add this flag
 let canvas = document.getElementById('drawHere');
 let ctx = canvas.getContext('2d');
 let predictedDigit = document.getElementById('Your number is N/A');
 let confidenceScore = document.getElementById('Confidence score -> 0');
+let isDrawing = false;
 
 ctx.strokeStyle = '#e5a50a';
 ctx.lineWidth = 12;
@@ -50,6 +51,21 @@ function preprocessImage(canvas) {
 import { loadModel } from './model_loader.js';
 loadModel().then(async (loadedModel) => {
     model = loadedModel;
+    loading = false;
+    document.getElementById('Recognize').disabled = false; // Enable button
 });
 document.getElementById('Recognize').addEventListener('click', recognizeDraw);
 document.getElementById('Clear').addEventListener('click', clearAll);
+canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    ctx.beginPath();
+    ctx.moveTo(e.offsetX, e.offsetY);
+});
+canvas.addEventListener('mousemove', (e) => {
+    if (isDrawing) {
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+    }
+});
+canvas.addEventListener('mouseup', () => isDrawing = false);
+canvas.addEventListener('mouseleave', () => isDrawing = false);
