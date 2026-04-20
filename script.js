@@ -30,10 +30,12 @@ function recognizeDraw(event) {
     const tensor = preprocessImage(canvas);
     console.log('Tensor created with shape:', tensor.shape);
     
-    recognize(tensor).then((data) => {
-        const idx = data.indexOf(Math.max(...data));
-        predictedDigit.textContent = idx;
-        confidenceScore.textContent = (Math.max(...data) * 100).toFixed(1) + '%';
+    recognize(tensor).then((softmaxData) => {
+        const idx = softmaxData.indexOf(Math.max(...softmaxData)); // Trova il massimo
+        predictedDigit.textContent = idx; // Aggiorna il numero
+        confidenceScore.textContent = (softmaxData[idx] * 100).toFixed(1) + '%'; // Aggiorna confidenza
+        console.log('Logits:', data); // Dovrebbe mostrare valori grezzi (es. [2.1, -0.5, 3.8, ...])
+        console.log('Softmax:', softmaxData); // Dovrebbe mostrare probabilità (es. [0.03, 0.005, 0.95, ...])
         loading = false;
     }).catch((err) => {
         console.error('Error during recognition:', err);
