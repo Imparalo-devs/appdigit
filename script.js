@@ -67,7 +67,7 @@ function preprocessImage(canvas) {
         const grayscale = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
         grayscalePixels[i / 4] = grayscale;
     }
-    const tensor = tf.tensor3d(grayscalePixels, [28, 28, 1]).toFloat().div(255);
+    const tensor = tf.tensor4d(grayscalePixels, [1, 28, 28, 1]).toFloat().div(255);
     return tensor;
 }
 
