@@ -31,7 +31,7 @@ function recognizeDraw(event) {
     console.log('Tensor created with shape:', tensor.shape);
     
     recognize(tensor).then((data) => {
-        const predictedDigitIndex = data.indexOf(Math.max(...data));
+        const predictedDigitIndex = data.findIndex(d => d === Math.max(...data)); // 🔍 Trova correttamente l'indice
         const confidence = Math.max(...data);
         
         predictedDigit.textContent = predictedDigitIndex;
