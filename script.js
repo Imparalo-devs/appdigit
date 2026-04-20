@@ -56,6 +56,7 @@ loadModel().then(async (loadedModel) => {
 }).catch((err) => {
     alert('Failed to load model. Check console for details.');
     console.error('Model load failed:', err);
+    document.getElementById('Recognize').disabled = true; // Disable button if model load fails
 });
 document.getElementById('Recognize').addEventListener('click', recognizeDraw);
 document.getElementById('Clear').addEventListener('click', clearAll);
