@@ -6,8 +6,8 @@ let confidenceScore = document.getElementById('confidence-score');
 let isDrawing = false;
 let loading = true;
 
-ctx.strokeStyle = '#e5a50a';
-ctx.lineWidth = 12;
+ctx.strokeStyle = '#ffffff';
+ctx.lineWidth = 20;
 ctx.lineCap = 'round';
 ctx.lineJoin = 'round';
 
