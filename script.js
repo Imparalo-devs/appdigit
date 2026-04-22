@@ -52,11 +52,11 @@ function preprocessImage(canvas) {
     tempCtx.drawImage(canvas, 0, 0, 28, 28);
     
     // Debug canvas dopo resize
-    const debugCanvas = document.createElement('canvas');
-    debugCanvas.width = 100; debugCanvas.height = 100;
-    const debugCtx = debugCanvas.getContext('2d');
-    debugCtx.drawImage(tempCanvas, 0, 0, 100, 100);
-    document.body.appendChild(debugCanvas); // Mostra immagine preprocessed
+    //const debugCanvas = document.createElement('canvas');
+    //debugCanvas.width = 100; debugCanvas.height = 100;
+    //const debugCtx = debugCanvas.getContext('2d');
+    //debugCtx.drawImage(tempCanvas, 0, 0, 100, 100);
+    //document.body.appendChild(debugCanvas); // Mostra immagine preprocessed
     
     const imageData = tempCtx.getImageData(0, 0, 28, 28);
     console.log('Pixel raw values:', Array.from(imageData.data).slice(0, 20)); // Primi 20 pixel
