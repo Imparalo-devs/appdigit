@@ -7,7 +7,7 @@ let isDrawing = false;
 let loading = true;
 
 ctx.strokeStyle = '#ffffff';
-ctx.lineWidth = 20;
+ctx.lineWidth = 30;
 ctx.lineCap = 'round';
 ctx.lineJoin = 'round';
 
